@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="favicon.ico?" />
+    <link rel="stylesheet" href="./pages/index.css" />
+    <title>Alrededor de EEUU</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Alrededor de los EEUU" />
+    <meta name="keywords" content="tripleten, Sprint 7" />
+    <meta name="author" content="Magaly Romero" />
+  </head>
+
+  <body>
+    <div class="popup">
+      <div class="popup__container">
+        <button class="popup__close">
+          <img
+            src="./images/Close_off.svg"
+            alt="close button"
+            class="popup__close"
+          />
+        </button>
+
+        <div class="popup__card">
+          <h3 class="popup__title">Editar perfil</h3>
+
+          <form class="popup__input">
+            <input
+              type="text"
+              placeholder="Nombre"
+              class="popup__text popup__text_title"
+            />
+
+            <input
+              type="text"
+              placeholder="Acerca de mí"
+              class="popup__text popup__text_about"
+            />
+
+            <button class="popup__submit-btn">Guardar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup__add">
+      <div class="popup__container">
+        <button class="popup__close">
+          <img
+            src="./images/Close_off.svg"
+            alt="close button"
+            class="popup__close"
+          />
+        </button>
+
+        <div class="popup__card">
+          <h3 class="popup__title">New Place</h3>
+          <form class="popup__input">
+            <input
+              type="text"
+              placeholder="Title"
+              class="popup__input_title popup__text"
+            />
+
+            <input
+              type="text"
+              placeholder="Image URL"
+              class="popup__input_url popup__text"
+            />
+
+            <button class="popup__button_add">Añadir</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup__imageFull" id="popup__imageFull">
+      <div class="popup__imageFull-container">
+        <button class="popup__close">
+          <img
+            src="./images/Close_off.svg"
+            alt="close button"
+            class="popup__closeFull"
+          />
+        </button>
+        <div class="popup__imageFull-content">
+          <img
+            src=""
+            alt="Imagen en pantalla completa"
+            class="popup__imageFull-image"
+          />
+          <h3 class="popup_titleFull"></h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="page">
+      <header class="header">
+        <div class="header__logo">
+          <img
+            src="./images/logo.svg"
+            alt="Logo Around The US'"
+            class="header__logo"
+          />
+        </div>
+        <hr class="header__line" />
+      </header>
+      <section class="profile">
+        <div class="profile__avatar">
+          <img
+            src="./images/Avatar.png"
+            alt="Profile picture"
+            class="profile__avatar"
+          />
+        </div>
+        <div class="profile__info">
+          <div class="profile__info-title">
+            <h1 class="profile__info-name">Jacques Cousteau</h1>
+            <button class="profile__info-edit" id="open-popup">
+              <img src="./images/Edit_off.svg" alt="Boton para editar" />
+            </button>
+          </div>
+          <h2 class="profile__info-subtitle">Explorador</h2>
+        </div>
+        <button class="profile__add">
+          <img
+            src="./images/Add.svg"
+            alt="Boton para añadir nuevo"
+            class="profile__add-img"
+          />
+        </button>
+      </section>
+      <main class="elements">
+        <div class="elements__container"></div>
+      </main>
+      <footer class="footer">
+        <p class="footer__copyright">&#169; 2024 Around The U.S.</p>
+      </footer>
+    </div>
+    <script src="./scripts/script.js"></script>
+  </body>
+</html>

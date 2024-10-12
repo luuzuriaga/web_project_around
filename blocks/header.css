@@ -1,0 +1,19 @@
+.header {
+  margin: 5% 0;
+}
+
+.header__line {
+  size: 1;
+  width: 100%;
+  border-color: #545454;
+}
+.header__logo {
+  width: 180px;
+  margin: 2% 0;
+}
+
+@media screen and (max-width: 320px) {
+  .header__logo {
+    width: 124px;
+  }
+}
