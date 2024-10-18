@@ -181,15 +181,34 @@
   max-height: 100%;
   border-radius: 10px;
 }
+
 @media (max-width: 320px) {
-  .popup {
+  .popup__container {
     width: 90%;
-    height: 100%;
-    left: 5%;
-    right: 5%;
-    top: 0;
-    margin: 0;
-    overflow: hidden;
-    scale: 1;
+    height: auto;
+    margin: 20% auto;
+  }
+
+  .popup__card {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .popup__title {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+
+  .popup__text {
+    font-size: 12px;
+    margin: 10px 0;
+  }
+
+  .popup__submit-btn,
+  .popup__button_add {
+    font-size: 12px;
+    padding: 10px;
+    margin: 15px 0;
   }
 }
