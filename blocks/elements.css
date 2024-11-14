@@ -58,7 +58,8 @@
   background-image: url("../images/like_on.svg");
 }
 .elements__delete {
-  width: 280px;
+  width: 100%;
+  max-width: 250px;
   display: flex;
   position: absolute;
   justify-content: flex-end;
@@ -84,6 +85,9 @@
   .elements__container {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
+  }
+  .elements__delete {
+    max-width: 200px;
   }
 }
 @media screen and (max-width: 320px) {
