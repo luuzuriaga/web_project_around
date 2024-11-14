@@ -59,7 +59,7 @@
 }
 .elements__delete {
   width: 100%;
-  max-width: 250px;
+  max-width: 280px;
   display: flex;
   position: absolute;
   justify-content: flex-end;
@@ -87,7 +87,7 @@
     grid-template-rows: repeat(3, 1fr);
   }
   .elements__delete {
-    max-width: 250px;
+    max-width: 280px;
   }
 }
 @media screen and (max-width: 320px) {
