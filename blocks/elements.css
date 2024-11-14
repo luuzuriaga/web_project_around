@@ -87,7 +87,7 @@
     grid-template-rows: repeat(3, 1fr);
   }
   .elements__delete {
-    max-width: 200px;
+    max-width: 250px;
   }
 }
 @media screen and (max-width: 320px) {
