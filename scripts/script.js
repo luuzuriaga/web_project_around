@@ -1,19 +1,35 @@
+import { enableValidation } from "./validate.js";
+
+const validationSettings = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__submit-btn",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
+// Habilitar la validación para los formularios
+enableValidation(validationSettings);
+
+// Selectores y elementos del DOM
 const popupProfile = document.querySelector(".popup");
 const profileEditButton = document.querySelector(".profile__info-edit");
 const profileNameNode = document.querySelector(".profile__info-name");
 const profileAboutNode = document.querySelector(".profile__info-subtitle");
-const formProfile = document.querySelector(".popup__input");
-const inputNameNode = formProfile.querySelector(".popup__text_title");
-const inputAboutNode = formProfile.querySelector(".popup__text_about");
+const formProfile = document.querySelector(".popup__form");
+const inputNameNode = formProfile.querySelector(".popup__input_title");
+const inputAboutNode = formProfile.querySelector(".popup__input_about");
 
 const closeProfilePopupButton = popupProfile.querySelector(".popup__close");
-const popupSaveButton = formProfile.querySelector(".popup__submit-btn");
 
+// Abrir popup de perfil y limpiar el formulario
 profileEditButton.addEventListener("click", function () {
   clearProfileForm();
   popupProfile.classList.add("active");
 });
 
+// Guardar los cambios del perfil al enviar el formulario
 formProfile.addEventListener("submit", function (event) {
   event.preventDefault();
   if (inputNameNode.value !== "" && inputAboutNode.value !== "") {
@@ -23,16 +39,19 @@ formProfile.addEventListener("submit", function (event) {
   }
 });
 
+// Cerrar el popup de perfil
 closeProfilePopupButton.addEventListener("click", function () {
   popupProfile.classList.remove("active");
   clearProfileForm();
 });
 
+// Función para limpiar el formulario de perfil
 function clearProfileForm() {
   inputNameNode.value = "";
   inputAboutNode.value = "";
 }
 
+// Datos iniciales de las tarjetas
 const initialCards = [
   {
     name: "Valle de Yosemite",
@@ -66,10 +85,12 @@ const popupAddImage = document.querySelector(".popup__add");
 const closeAddButton = popupAddImage.querySelector(".popup__close");
 const saveAddButton = popupAddImage.querySelector(".popup__button_add");
 
+// Abrir el popup para añadir una nueva imagen
 profileAddButton.addEventListener("click", function () {
   popupAddImage.classList.add("active");
 });
 
+// Guardar una nueva imagen al hacer clic en "Guardar"
 saveAddButton.addEventListener("click", function (event) {
   event.preventDefault();
 
@@ -84,11 +105,13 @@ saveAddButton.addEventListener("click", function (event) {
   }
 });
 
+// Añadir una nueva imagen al contenedor de tarjetas
 function addImage(name, link) {
   initialCards.unshift({ name, link });
   renderCard({ name, link }, true);
 }
 
+// Renderizar cada tarjeta de imagen
 function renderCard(data, isNew = false) {
   const cardElement = document.createElement("div");
   cardElement.classList.add("elements__item");
@@ -117,10 +140,13 @@ function renderCard(data, isNew = false) {
       </button>
     </div>
   `;
+
+  // Funcionalidad para ver imagen en tamaño completo
   const popupImageFull = document.querySelector(".popup__imageFull");
   const popupImage = popupImageFull.querySelector(".popup__imageFull-image");
   const popupImageTitle = popupImageFull.querySelector(".popup_titleFull");
   const imageFullButton = cardElement.querySelector(".elements__image");
+
   imageFullButton.addEventListener("click", function () {
     popupImage.src = data.link;
     popupImageTitle.textContent = data.name;
@@ -132,17 +158,20 @@ function renderCard(data, isNew = false) {
     popupImageFull.classList.remove("active");
   });
 
+  // Funcionalidad para like en la imagen
   cardElement
     .querySelector(".elements__description-like")
     .addEventListener("click", function (evt) {
       evt.target.classList.toggle("active");
     });
 
+  // Funcionalidad para eliminar la tarjeta
   const deleteButton = cardElement.querySelector(".elements__delete");
   deleteButton.addEventListener("click", function () {
     cardElement.remove();
   });
 
+  // Añadir tarjeta al contenedor (al inicio si es nueva)
   if (isNew) {
     cardsContainer.prepend(cardElement);
   } else {
@@ -150,10 +179,12 @@ function renderCard(data, isNew = false) {
   }
 }
 
+// Cerrar el popup de añadir imagen
 closeAddButton.addEventListener("click", function () {
   popupAddImage.classList.remove("active");
 });
 
+// Renderizar las tarjetas iniciales
 function renderInitialCards() {
   initialCards.forEach(renderCard);
 }
