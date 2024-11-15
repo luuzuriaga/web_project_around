@@ -1,6 +1,3 @@
-// Importamos las funciones de validación desde validate.js
-import { validateAddImageForm, validateProfileForm } from "./validate.js";
-
 const popupProfile = document.querySelector(".popup");
 const profileEditButton = document.querySelector(".profile__info-edit");
 const profileNameNode = document.querySelector(".profile__info-name");
@@ -19,9 +16,7 @@ profileEditButton.addEventListener("click", function () {
 
 formProfile.addEventListener("submit", function (event) {
   event.preventDefault();
-
-  // Validación usando la función de validate.js
-  if (validateProfileForm(inputNameNode.value, inputAboutNode.value)) {
+  if (inputNameNode.value !== "" && inputAboutNode.value !== "") {
     profileNameNode.textContent = inputNameNode.value;
     profileAboutNode.textContent = inputAboutNode.value;
     popupProfile.classList.remove("active");
@@ -81,8 +76,7 @@ saveAddButton.addEventListener("click", function (event) {
   const inputImageTitle = document.querySelector(".popup__input_title");
   const inputImageUrl = document.querySelector(".popup__input_url");
 
-  // Validación usando la función de validate.js
-  if (validateAddImageForm(inputImageTitle.value, inputImageUrl.value)) {
+  if (inputImageTitle.value !== "" && inputImageUrl.value !== "") {
     addImage(inputImageTitle.value, inputImageUrl.value);
     inputImageTitle.value = "";
     inputImageUrl.value = "";
@@ -123,12 +117,10 @@ function renderCard(data, isNew = false) {
       </button>
     </div>
   `;
-
   const popupImageFull = document.querySelector(".popup__imageFull");
   const popupImage = popupImageFull.querySelector(".popup__imageFull-image");
   const popupImageTitle = popupImageFull.querySelector(".popup_titleFull");
   const imageFullButton = cardElement.querySelector(".elements__image");
-
   imageFullButton.addEventListener("click", function () {
     popupImage.src = data.link;
     popupImageTitle.textContent = data.name;
