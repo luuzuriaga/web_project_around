@@ -12,7 +12,8 @@
   </head>
 
   <body>
-    <div class="popup">
+    <!-- Popup Editar Perfil -->
+    <div class="popup popup_edit-profile">
       <div class="popup__container">
         <button class="popup__close">
           <img
@@ -25,26 +26,39 @@
         <div class="popup__card">
           <h3 class="popup__title">Editar perfil</h3>
 
-          <form class="popup__input">
+          <form class="popup__form" name="editProfileForm">
             <input
               type="text"
               placeholder="Nombre"
               class="popup__text popup__text_title"
+              name="name"
+              required
             />
+            <div class="popup__error" id="name-error"></div>
 
             <input
               type="text"
               placeholder="Acerca de mí"
               class="popup__text popup__text_about"
+              name="about"
+              required
             />
+            <div class="popup__error" id="about-error"></div>
 
-            <button class="popup__submit-btn">Guardar</button>
+            <button
+              type="submit"
+              class="popup__submit-btn popup__button_disabled"
+              disabled
+            >
+              Guardar
+            </button>
           </form>
         </div>
       </div>
     </div>
 
-    <div class="popup__add">
+    <!-- Popup Nuevo Lugar -->
+    <div class="popup popup_new-place">
       <div class="popup__container">
         <button class="popup__close">
           <img
@@ -56,25 +70,38 @@
 
         <div class="popup__card">
           <h3 class="popup__title">Nuevo Lugar</h3>
-          <form class="popup__input">
+          <form class="popup__form" name="newPlaceForm">
             <input
               type="text"
-              placeholder="Titulo"
+              placeholder="Título"
               class="popup__input_title popup__text"
+              name="title"
+              required
             />
+            <div class="popup__error" id="title-error"></div>
 
             <input
-              type="text"
+              type="url"
               placeholder="URL de la imagen"
               class="popup__input_url popup__text"
+              name="imageUrl"
+              required
             />
+            <div class="popup__error" id="imageUrl-error"></div>
 
-            <button class="popup__button_add">Añadir</button>
+            <button
+              type="submit"
+              class="popup__button_add popup__button_disabled"
+              disabled
+            >
+              Añadir
+            </button>
           </form>
         </div>
       </div>
     </div>
 
+    <!-- Imagen en Pantalla Completa -->
     <div class="popup__imageFull" id="popup__imageFull">
       <div class="popup__imageFull-container">
         <button class="popup__close">
@@ -95,6 +122,7 @@
       </div>
     </div>
 
+    <!-- Página Principal -->
     <div class="page">
       <header class="header">
         <div class="header__logo">
@@ -106,6 +134,8 @@
         </div>
         <hr class="header__line" />
       </header>
+
+      <!-- Perfil de Usuario -->
       <section class="profile">
         <div class="profile__avatar">
           <img
@@ -131,13 +161,19 @@
           />
         </button>
       </section>
+
+      <!-- Elementos y Contenido -->
       <main class="elements">
         <div class="elements__container"></div>
       </main>
+
+      <!-- Pie de página -->
       <footer class="footer">
         <p class="footer__copyright">&#169; 2024 Around The U.S.</p>
       </footer>
     </div>
+
     <script src="./scripts/script.js"></script>
+    <script src="./pages/validate.js"></script>
   </body>
 </html>
