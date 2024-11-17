@@ -1,17 +1,33 @@
 body {
-  background-color: #000;
+  background-color: black;
+  margin: 0;
+}
+
+h2,
+h3,
+p {
+  margin: 0;
 }
 .page {
-  width: 880px;
-  color: #fff;
-  font-family: "Inter", sans-serif;
-  font-size: 24px;
-  line-height: 1.5;
-  font-weight: 600;
-  margin: 0 auto;
+  color: white;
+  position: relative;
 }
-@media screen and (max-width: 880px) {
-  .page {
-    width: 96%;
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 45px 200px 60px 200px;
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    padding: 45px 0 60px 0;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .main {
+    padding: 28px 0 36px 0;
   }
 }
