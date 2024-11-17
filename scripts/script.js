@@ -15,7 +15,7 @@ const initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lake-louise.jpg",
   },
   {
-    name: "MontaÃ±as Calvas",
+    name: "Montañas Calvas",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/bald-mountains.jpg",
   },
   {
@@ -54,7 +54,7 @@ const closeModalButtonAddCard = modalCloneAddCard.querySelector(".close-icon");
 
 function openModalAddCard() {
   modalAddCardTitle.textContent = "Nuevo Lugar";
-  modalAddCard.querySelector("#input1").placeholder = "TÃ­tulo";
+  modalAddCard.querySelector("#input1").placeholder = "Título";
   modalAddCard.querySelector("#input2").placeholder = "URL de la imagen";
   modalAddCard.querySelector("#input2").type = "url";
   pageFrame.append(modalAddCard);
@@ -122,7 +122,7 @@ const closeModalButtonUserInfo =
 function openModalUserInfo() {
   modalUserInfoTitle.textContent = "Editar Perfil";
   modalUserInfoForm.querySelector("#input1").placeholder = "Nombre";
-  modalUserInfoForm.querySelector("#input2").placeholder = "Acerca de mÃ­";
+  modalUserInfoForm.querySelector("#input2").placeholder = "Acerca de mí";
   modalUserInfoForm.name = "UserInfoForm";
   pageFrame.append(modalUserInfo);
 
