@@ -1,51 +1,67 @@
-import { Card } from "./card.js";
-import { FormValidator } from "./formValidator.js";
+import { validateForm } from "./formValidator.js";
 import { openModal, closeModal } from "./utils.js";
+import { createCard } from "./card.js";
 
-// Exponer la clase Card al ámbito global para pruebas en la consola
-window.Card = Card;
+const pageFrame = document.querySelector(".page");
 
-const initialCards = [
-  {
-    name: "Valle de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lake-louise.jpg",
-  },
-  {
-    name: "Montañas Calvas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/latemar.jpg",
-  },
-  {
-    name: "Parque Nacional de la Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lago.jpg",
-  },
-];
+// Modal para agregar tarjetas
+const addCardButton = document.querySelector(".add__card-button");
+const modalTemplateAddCard = document.querySelector(".modal__box-template");
+const modalCloneAddCard = modalTemplateAddCard.cloneNode(true).content;
+const modalAddCard = modalCloneAddCard.querySelector(".modal");
+const modalAddCardTitle = modalAddCard.querySelector(".modal__box-title");
+const closeModalButtonAddCard = modalCloneAddCard.querySelector(".close-icon");
 
-const cardContainer = document.querySelector(".posts");
-initialCards.forEach((data) => {
-  const card = new Card(data.name, data.link, ".post__template");
-  cardContainer.append(card.getCard());
-});
+function openModalAddCard() {
+  modalAddCardTitle.textContent = "Nuevo Lugar";
+  modalAddCard.querySelector("#input1").placeholder = "Título";
+  modalAddCard.querySelector("#input2").placeholder = "URL de la imagen";
+  modalAddCard.querySelector("#input2").type = "url";
+  pageFrame.append(modalAddCard);
 
-const formConfig = {
-  inputSelector: ".modal__box-form-input",
-  submitButtonSelector: ".modal__box-form-button",
-  inactiveButtonClass: "modal__box-form-button-inactive",
-  inputErrorClass: "modal__box-form-input-error",
-};
+  validateForm(modalAddCard);
+}
 
-document.querySelectorAll(".modal__box-form").forEach((form) => {
-  const validator = new FormValidator(formConfig, form);
-  validator.enableValidation();
-});
+addCardButton.addEventListener("click", openModalAddCard);
+closeModalButtonAddCard.addEventListener("click", closeModal);
+
+// Modal de edición de perfil
+const editProfileButton = document.querySelector(
+  ".profile__info-up-edit-button"
+);
+const modalCloneUserInfo = modalTemplateAddCard.cloneNode(true).content;
+const modalUserInfo = modalCloneUserInfo.querySelector(".modal");
+const modalUserInfoTitle = modalUserInfo.querySelector(".modal__box-title");
+const modalUserInfoForm = modalUserInfo.querySelector(".modal__box-form");
+const closeModalButtonUserInfo =
+  modalCloneUserInfo.querySelector(".close-icon");
+
+function openModalUserInfo() {
+  modalUserInfoTitle.textContent = "Editar Perfil";
+  modalUserInfoForm.querySelector("#input1").placeholder = "Nombre";
+  modalUserInfoForm.querySelector("#input2").placeholder = "Acerca de mí";
+  pageFrame.append(modalUserInfo);
+
+  validateForm(modalUserInfo);
+}
+
+editProfileButton.addEventListener("click", openModalUserInfo);
+closeModalButtonUserInfo.addEventListener("click", closeModal);
+
+// Guardar cambios en perfil
+const nameInput = modalUserInfo.querySelector("#input1");
+const professionInput = modalUserInfo.querySelector("#input2");
+const newName = document.querySelector(".profile__info-up-name");
+const newProfession = document.querySelector(".profile__info-down-profession");
+const submitButtonUserInfo = modalUserInfo.querySelector(
+  ".modal__box-form-button"
+);
+
+function submitUserInfo(event) {
+  event.preventDefault();
+  newName.textContent = nameInput.value;
+  newProfession.textContent = professionInput.value;
+  modalUserInfo.remove();
+}
+
+submitButtonUserInfo.addEventListener("click", submitUserInfo);
