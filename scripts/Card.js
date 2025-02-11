@@ -13,9 +13,11 @@ export class Card {
   }
 
   _setEventListeners() {
-    this._element.querySelector(".heart-icon").addEventListener("click", () => {
-      this._toggleLike();
-    });
+    this._element
+      .querySelector(".heart-icon")
+      .addEventListener("click", (event) => {
+        this._toggleLike(event.target);
+      });
     this._element.querySelector(".trash-icon").addEventListener("click", () => {
       this._deleteCard();
     });
@@ -25,10 +27,14 @@ export class Card {
         this._openImageModal();
       });
   }
-
-  _toggleLike() {
-    const likeIcon = this._element.querySelector(".heart-icon");
-    likeIcon.classList.toggle("liked");
+  _toggleLike(icon) {
+    if (icon.alt === "Not liked") {
+      icon.alt = "Liked";
+      icon.src = "./images/heart-icon-black.svg";
+    } else {
+      icon.alt = "Not liked";
+      icon.src = "./images/heart-icon.svg";
+    }
   }
 
   _deleteCard() {

@@ -2,6 +2,9 @@ import { Card } from "./card.js";
 import { FormValidator } from "./formValidator.js";
 import { openModal, closeModal } from "./utils.js";
 
+// Exponer la clase Card al ámbito global para pruebas en la consola
+window.Card = Card;
+
 const initialCards = [
   {
     name: "Valle de Yosemite",
