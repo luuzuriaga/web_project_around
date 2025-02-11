@@ -57,6 +57,18 @@ postsCardsContainer.addEventListener("click", (event) => {
   }
 
   if (event.target.classList.contains("post__picture")) {
-    openModal(event.target);
+    const modalCardTemplate = document.querySelector(".modal__card-template");
+    const modalCardClone = modalCardTemplate.cloneNode(true).content;
+    const modalCard = modalCardClone.querySelector(".modal");
+    const cardImage = modalCard.querySelector(".modal__card-image");
+    const cardTitle = modalCard.querySelector(".modal__card-title");
+
+    // Asignar datos de la imagen al modal
+    cardImage.src = event.target.src;
+    cardImage.alt = event.target.alt;
+    cardTitle.textContent = event.target.alt;
+
+    // Agregar modal al DOM y abrirlo
+    document.body.append(modalCard);
   }
 });

@@ -11,6 +11,11 @@ const modalCloneAddCard = modalTemplateAddCard.cloneNode(true).content;
 const modalAddCard = modalCloneAddCard.querySelector(".modal");
 const modalAddCardTitle = modalAddCard.querySelector(".modal__box-title");
 const closeModalButtonAddCard = modalCloneAddCard.querySelector(".close-icon");
+const titleInput = modalAddCard.querySelector("#input1");
+const urlLinkInput = modalAddCard.querySelector("#input2");
+const submitButtonAddCard = modalAddCard.querySelector(
+  ".modal__box-form-button"
+);
 
 function openModalAddCard() {
   modalAddCardTitle.textContent = "Nuevo Lugar";
@@ -22,8 +27,34 @@ function openModalAddCard() {
   validateForm(modalAddCard);
 }
 
+function closeModalAddCard() {
+  modalAddCard.remove();
+}
+
 addCardButton.addEventListener("click", openModalAddCard);
-closeModalButtonAddCard.addEventListener("click", closeModal);
+closeModalButtonAddCard.addEventListener("click", closeModalAddCard);
+
+// Crear nuevas tarjetas correctamente
+function submitCardInfo(event) {
+  event.preventDefault();
+
+  const title = titleInput.value.trim();
+  const imageUrl = urlLinkInput.value.trim();
+
+  if (!imageUrl) {
+    alert("Por favor ingresa una URL válida para la imagen.");
+    return;
+  }
+
+  const newCard = { name: title, link: imageUrl };
+  createCard(newCard);
+
+  closeModalAddCard();
+  titleInput.value = "";
+  urlLinkInput.value = "";
+}
+
+submitButtonAddCard.addEventListener("click", submitCardInfo);
 
 // Modal de edición de perfil
 const editProfileButton = document.querySelector(
@@ -45,8 +76,12 @@ function openModalUserInfo() {
   validateForm(modalUserInfo);
 }
 
+function closeModalUserInfo() {
+  modalUserInfo.remove();
+}
+
 editProfileButton.addEventListener("click", openModalUserInfo);
-closeModalButtonUserInfo.addEventListener("click", closeModal);
+closeModalButtonUserInfo.addEventListener("click", closeModalUserInfo);
 
 // Guardar cambios en perfil
 const nameInput = modalUserInfo.querySelector("#input1");
@@ -61,7 +96,7 @@ function submitUserInfo(event) {
   event.preventDefault();
   newName.textContent = nameInput.value;
   newProfession.textContent = professionInput.value;
-  modalUserInfo.remove();
+  closeModalUserInfo();
 }
 
 submitButtonUserInfo.addEventListener("click", submitUserInfo);
