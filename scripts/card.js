@@ -1,74 +1,92 @@
-import { openModal, closeModal } from "./utils.js";
+import { openModal } from "./utils.js";
 
-const postsCardsContainer = document.querySelector(".posts");
-const cardTemplate = document.querySelector(".post__template");
+export class Card {
+  constructor({ name, link }, templateSelector) {
+    this._name = name;
+    this._link = link;
+    this._templateSelector = templateSelector;
+  }
 
-const initialCards = [
-  {
-    name: "Valle de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lake-louise.jpg",
-  },
-  {
-    name: "Montañas Calvas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/latemar.jpg",
-  },
-  {
-    name: "Parque Nacional de la Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lago.jpg",
-  },
-];
+  // Método para obtener el contenido del template
+  _getTemplate() {
+    const cardTemplate = document.querySelector(this._templateSelector).content;
+    return cardTemplate.cloneNode(true);
+  }
 
-export function createCard(card) {
-  const clonedCard = cardTemplate.cloneNode(true).content;
-  const cardPicture = clonedCard.querySelector(".post__picture");
-  const cardTitle = clonedCard.querySelector(".post__info-bar-name");
-  cardPicture.src = card.link;
-  cardPicture.alt = card.name;
-  cardTitle.textContent = card.name;
-  postsCardsContainer.append(clonedCard);
-}
-
-initialCards.forEach(createCard);
-
-postsCardsContainer.addEventListener("click", (event) => {
-  if (event.target.classList.contains("trash-button")) {
+  // Método para manejar el botón de borrar
+  _handleDeleteCard(event) {
     event.target.closest(".post").remove();
   }
 
-  if (event.target.classList.contains("heart-icon")) {
-    const currentIcon = event.target;
-    currentIcon.alt = currentIcon.alt === "Not liked" ? "Liked" : "Not liked";
-    currentIcon.src =
-      currentIcon.alt === "Liked"
+  // Método para manejar el botón de like
+  _handleLikeButton(event) {
+    const likeButton = event.target;
+    likeButton.alt = likeButton.alt === "Not liked" ? "Liked" : "Not liked";
+    likeButton.src =
+      likeButton.alt === "Liked"
         ? "./images/heart-icon-black.svg"
         : "./images/heart-icon.svg";
   }
 
-  if (event.target.classList.contains("post__picture")) {
+  // Método para manejar el clic en la imagen (expandir modal)
+  _handleImageClick() {
     const modalCardTemplate = document.querySelector(".modal__card-template");
     const modalCardClone = modalCardTemplate.cloneNode(true).content;
     const modalCard = modalCardClone.querySelector(".modal");
     const cardImage = modalCard.querySelector(".modal__card-image");
     const cardTitle = modalCard.querySelector(".modal__card-title");
 
-    // Asignar datos de la imagen al modal
-    cardImage.src = event.target.src;
-    cardImage.alt = event.target.alt;
-    cardTitle.textContent = event.target.alt;
+    // Asignar datos al modal
+    cardImage.src = this._link;
+    cardImage.alt = this._name;
+    cardTitle.textContent = this._name;
 
-    // Agregar modal al DOM y abrirlo
+    // Abrir el modal
     document.body.append(modalCard);
   }
-});
+
+  // Método para agregar eventos
+  _setEventListeners(cardElement) {
+    // Botón de borrar
+    cardElement
+      .querySelector(".trash-button")
+      .addEventListener("click", (event) => this._handleDeleteCard(event));
+
+    // Botón de like
+    cardElement
+      .querySelector(".heart-icon")
+      .addEventListener("click", (event) => this._handleLikeButton(event));
+
+    // Imagen (expandir modal)
+    cardElement
+      .querySelector(".post__picture")
+      .addEventListener("click", () => this._handleImageClick());
+  }
+
+  // Método para crear la tarjeta
+  createCard() {
+    const cardElement = this._getTemplate();
+    const cardImage = cardElement.querySelector(".post__picture");
+    const cardTitle = cardElement.querySelector(".post__info-bar-name");
+
+    // Asignar datos a la tarjeta
+    cardImage.src = this._link;
+    cardImage.alt = this._name;
+    cardTitle.textContent = this._name;
+
+    // Agregar eventos
+    this._setEventListeners(cardElement);
+
+    return cardElement;
+  }
+
+  // Método estático para inicializar las tarjetas iniciales
+  static renderInitialCards(cardsData, containerSelector, templateSelector) {
+    const container = document.querySelector(containerSelector);
+    cardsData.forEach((cardData) => {
+      const card = new Card(cardData, templateSelector);
+      const cardElement = card.createCard();
+      container.append(cardElement);
+    });
+  }
+}
