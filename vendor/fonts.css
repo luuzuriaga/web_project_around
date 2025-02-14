@@ -1,14 +1,14 @@
 @font-face {
-  src: url(../vendor/fonts/InterDisplay-Black.otf) format("otf");
+  src: url(../vendor/fonts/web/InterDisplay-Black.otf) format("otf");
   font-family: "Inter Black";
 }
 
 @font-face {
-  src: url(../fonts/Inter-Medium.otf) format("otf");
+  src: url(../fonts/web/Inter-Medium.otf) format("otf");
   font-family: "Inter Medium";
 }
 
 @font-face {
-  src: url(../vendor/fonts/InterDisplay-Regular.otf) format("otf");
+  src: url(../vendor/fonts/web/InterDisplay-Regular.otf) format("otf");
   font-family: "Inter Regular";
 }

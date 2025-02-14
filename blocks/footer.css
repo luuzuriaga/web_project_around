@@ -1,21 +1,26 @@
 .footer {
-  font-family: "Inter Regular", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
   color: #545454;
   margin-top: 67px;
-  text-align: left;
+  text-align: left; /* Cambiar a center para centrar el texto */
   width: 100%;
+  position: relative; /* Asegurar que el footer esté posicionado correctamente */
+  bottom: 0;
 }
 
 @media screen and (max-width: 768px) {
   .footer {
-    width: 75%;
+    text-align: center;
+    width: 100%; /* Asegurar que el footer ocupe todo el ancho en pantallas pequeñas */
+    margin-top: 50px; /* Ajustar el margen superior */
   }
 }
 
 @media screen and (max-width: 320px) {
   .footer {
-    width: 85%;
-    margin-top: 50px;
+    text-align: center;
+    width: 100%; /* Asegurar que el footer ocupe todo el ancho en pantallas muy pequeñas */
+    margin-top: 50px; /* Ajustar el margen superior */
   }
 }
