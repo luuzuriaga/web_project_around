@@ -1,10 +1,11 @@
 .posts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  column-gap: 17px;
-  row-gap: 20px;
-  box-sizing: content-box;
+  grid-template-columns: repeat(3, 1fr); /* Tres columnas para las tarjetas */
+  gap: 17px; /* Espaciado entre las tarjetas */
+  width: 880px; /* Ancho total del contenedor */
+  height: auto; /* Alto total del contenedor */
+  margin: 0 auto; /* Centra las tarjetas en el contenedor */
+  box-sizing: border-box; /* Incluye el gap en el ancho total */
 }
 
 .post {
@@ -13,17 +14,20 @@
   color: black;
   font-family: "Inter Black", sans-serif;
   font-size: 20px;
-  width: 282px;
-  height: 361px;
+  width: 282px; /* Ancho exacto de cada tarjeta */
+  height: 361px; /* Alto exacto de cada tarjeta */
   display: flex;
   flex-direction: column;
   position: relative;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Añade profundidad */
+  overflow: hidden; /* Evita desbordes del contenido */
 }
 
 .post__picture {
-  border-radius: 10px 10px 0 0;
-  width: 282px;
-  height: 282px;
+  border-radius: 10px 10px 0 0; /* Redondeo en la parte superior */
+  width: 282px; /* Imagen cuadrada: ancho */
+  height: 282px; /* Imagen cuadrada: alto */
+  object-fit: cover; /* Asegura que la imagen rellene el área sin distorsión */
 }
 
 .post__info-bar {
@@ -31,15 +35,15 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 18px 0 18px;
-  margin-top: 25px;
+  padding: 0 18px; /* Espaciado interno para los textos */
+  margin-top: 10px;
 }
 
 .post__info-bar-name {
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
-  max-width: 208px;
+  overflow: hidden; /* Evita que el texto se desborde */
+  max-width: 208px; /* Máximo ancho del texto dentro de la tarjeta */
 }
 
 .trash-icon {
@@ -58,27 +62,27 @@
   width: 25px;
 }
 
-.modal__card-image {
-  width: 75vw;
-  height: 75vh;
-}
-
-.modal__card-title {
-  color: white;
-}
-
+/* Responsividad */
 @media screen and (max-width: 768px) {
   .posts {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    margin: 0;
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Dos columnas para pantallas medianas */
+    width: 100%; /* Contenedor fluido */
+    gap: 15px;
   }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 480px) {
   .posts {
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    margin: 0;
+    grid-template-columns: repeat(1, 1fr); /* Una columna en móviles */
+    width: 100%; /* Contenedor fluido */
+    gap: 20px;
+    padding-top: 100px;
+  }
+
+  .post {
+    margin: 0 auto; /* Centra las tarjetas en móviles */
   }
 }

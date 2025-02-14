@@ -11,18 +11,26 @@
 
 @media screen and (max-width: 768px) {
   .header {
-    width: 75%;
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    padding: 0 15px; /* Ajusta el padding para pantallas medianas */
   }
 }
 
 @media screen and (max-width: 320px) {
   .header {
-    width: 100%;
-    box-sizing: content-box;
-    height: 56px;
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    height: 56px; /* Altura fija */
+    top: 28px; /* Ajusta la posición vertical */
+    border-width: 1px; /* Define el grosor del borde */
+    box-sizing: border-box; /* Incluye padding y borde */
+    position: relative; /* Permite que `top` funcione */
+    margin: 0 auto; /* Centra el header horizontalmente */
+    display: flex; /* Activa Flexbox */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
   }
 
   .logo {
-    margin-left: 27px;
+    max-width: 140px; /* Ajusta el tamaño del logo */
   }
 }
