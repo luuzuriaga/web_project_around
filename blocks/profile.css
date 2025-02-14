@@ -115,6 +115,21 @@
     justify-content: space-between;
     align-items: center;
   }
+  .profile__info {
+    margin: auto;
+    width: 70%; /* Mantener esto si es necesario */
+  }
+
+  .profile__info-text {
+    text-align: center;
+  }
+
+  .profile__info-down {
+    text-align: center;
+  }
+  .profile__info-down-profession {
+    margin-left: 50px;
+  }
 
   .profile__add-button {
     width: 75%;
@@ -183,6 +198,10 @@
     white-space: nowrap; /* Evita que el texto se parta */
     overflow: hidden; /* Esconde el texto que sobrepasa el contenedor */
     text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es muy largo */
+  }
+
+  .profile__info-down-profession {
+    margin-left: 0px;
   }
 
   .profile__info-up-edit-button {

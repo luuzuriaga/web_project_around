@@ -19,8 +19,8 @@
   display: flex;
   flex-direction: row;
   justify-content: end;
-  width: 500px;
-  margin-bottom: 5px;
+  width: 450px;
+  margin-bottom: 10px;
 }
 
 .modal__close-box-flex {
