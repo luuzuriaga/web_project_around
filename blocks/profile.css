@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: left;
   margin: 0 0 50px 0; /* Agrega un margen inferior de 20px */
   width: 100%;
   border-color: aliceblue;
@@ -30,6 +30,7 @@
   gap: 0px;
   border: 1px 0px 0px 0px;
   opacity: 0px;
+  text-align: left;
 }
 
 .profile__info-up {
@@ -38,7 +39,7 @@
   margin: 10px 0 0 0;
   display: flex-start;
   flex-direction: row;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 }
 
@@ -183,7 +184,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start; /* Mantén los elementos alineados a la izquierda */
-    align-items: center; /* Asegura alineación vertical */
+    align-items: left; /* Asegura alineación vertical */
     width: 100%; /* Asegura que el contenedor no sea más ancho que `.profile` */
     box-sizing: border-box;
     gap: 10px; /* Pequeño espacio entre los elementos */
