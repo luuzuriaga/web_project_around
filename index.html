@@ -2,8 +2,9 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="shortcut icon" href="./favicon.ico?" />
+    <link rel="shortcut icon" href="./favicon.ico" />
     <link rel="stylesheet" href="./pages/index.css" />
+    <link rel="stylesheet" href="./vendor/normalize.css" />
     <title>Around the US</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Alrededor de los EEUU" />
@@ -88,12 +89,13 @@
             </div>
             <div class="modal__box">
               <form class="modal__box-form" novalidate>
-                <h3 class="modal__box-title"></h3>
+                <h3 class="modal__box-title">Editar perfil</h3>
                 <label class="modal__box-form-field">
                   <input
                     type="text"
                     id="input1"
-                    placeholder=""
+                    name="name"
+                    placeholder="Nombre"
                     class="modal__box-form-input"
                     minlength="2"
                     maxlength="40"
@@ -105,7 +107,8 @@
                   <input
                     type="text"
                     id="input2"
-                    placeholder=""
+                    name="profession"
+                    placeholder="Profesión"
                     class="modal__box-form-input"
                     minlength="2"
                     maxlength="200"
@@ -124,8 +127,9 @@
             </div>
           </div>
         </template>
+
         <template class="modal__card-template">
-          <div class="modal">
+          <div class="modal modal_image">
             <div class="modal__card">
               <div class="modal__close-box-flex">
                 <img

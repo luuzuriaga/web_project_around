@@ -1,10 +1,9 @@
-// src/index.js
-import { Section } from "./scripts/Section.js";
-import { Card } from "./scripts/Card.js";
-import { PopupWithImage } from "./scripts/PopupWithImage.js";
-import { PopupWithForm } from "./scripts/PopupWithForm.js";
-import { UserInfo } from "./scripts/UserInfo.js";
-import { FormValidator } from "./scripts/formValidator.js";
+import { Section } from "./Section.js";
+import { Card } from "./Card.js";
+import { PopupWithImage } from "./PopupWithImage.js";
+import { PopupWithForm } from "./PopupWithForm.js";
+import { UserInfo } from "./UserInfo.js";
+import { FormValidator } from "./formValidator.js";
 
 // Datos iniciales de las tarjetas
 const initialCards = [
@@ -34,7 +33,7 @@ const initialCards = [
   },
 ];
 
-// Función para crear una tarjeta y devolver el elemento DOM
+// Función para crear una tarjeta
 const createCard = (data) => {
   const card = new Card(data, ".post__template", (name, link) => {
     imagePopup.open(name, link);
@@ -42,7 +41,7 @@ const createCard = (data) => {
   return card.createCard();
 };
 
-// Instancia de Section para renderizar tarjetas
+// Instancia Section para renderizar tarjetas
 const cardSection = new Section(
   {
     items: initialCards,
@@ -62,15 +61,24 @@ const userInfo = new UserInfo({
   professionSelector: ".profile__info-down-profession",
 });
 
-// Popup para editar perfil
-const editProfilePopup = new PopupWithForm(".modal_user", (formData) => {
+// 📌 Clonar y añadir modal de editar perfil
+const editProfileTemplate = document.querySelector(
+  ".modal__box-template"
+).content;
+const editProfileModal = editProfileTemplate
+  .querySelector(".modal")
+  .cloneNode(true);
+editProfileModal.classList.add("modal_user");
+document.body.appendChild(editProfileModal);
+
+// Popup editar perfil
+const editProfilePopup = new PopupWithForm(editProfileModal, (formData) => {
   userInfo.setUserInfo({
     name: formData.name,
     profession: formData.profession,
   });
   editProfilePopup.close();
 });
-
 editProfilePopup.setEventListeners();
 
 // Botón abrir popup editar perfil
@@ -80,23 +88,27 @@ const editProfileButton = document.querySelector(
 
 editProfileButton.addEventListener("click", () => {
   const { name, profession } = userInfo.getUserInfo();
-  document.querySelector(".modal_user #input1").value = name;
-  document.querySelector(".modal_user #input2").value = profession;
+  editProfileModal.querySelector("#input1").value = name;
+  editProfileModal.querySelector("#input2").value = profession;
   editProfilePopup.open();
 });
 
-// Popup para agregar tarjeta
-const addCardPopup = new PopupWithForm(".modal_add", (formData) => {
+// 📌 Clonar y añadir modal de agregar tarjeta
+const addCardTemplate = document.querySelector(".modal__box-template").content;
+const addCardModal = addCardTemplate.querySelector(".modal").cloneNode(true);
+addCardModal.classList.add("modal_add");
+document.body.appendChild(addCardModal);
+
+// Popup agregar tarjeta
+const addCardPopup = new PopupWithForm(addCardModal, (formData) => {
   const newCard = createCard({ name: formData.title, link: formData.link });
   cardSection.addItem(newCard);
   addCardPopup.close();
 });
-
 addCardPopup.setEventListeners();
 
 // Botón abrir popup agregar tarjeta
 const addCardButton = document.querySelector(".add__card-button");
-
 addCardButton.addEventListener("click", () => {
   addCardPopup.open();
 });
@@ -107,11 +119,11 @@ imagePopup.setEventListeners();
 
 // Validadores de formularios
 const editFormValidator = new FormValidator(
-  document.querySelector(".modal_user .modal__box-form")
+  editProfileModal.querySelector(".modal__box-form")
 );
 editFormValidator.enableValidation();
 
 const addFormValidator = new FormValidator(
-  document.querySelector(".modal_add .modal__box-form")
+  addCardModal.querySelector(".modal__box-form")
 );
 addFormValidator.enableValidation();
