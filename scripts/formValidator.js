@@ -6,8 +6,6 @@ export class FormValidator {
       ...formElement.querySelectorAll(".modal__box-form-input"),
     ];
   }
-
-  // Mostrar mensaje de error
   _showInputError(inputElement, errorMessage) {
     const errorMsg = this._formElement.querySelector(
       `.${inputElement.id}-error`
@@ -16,8 +14,6 @@ export class FormValidator {
     errorMsg.classList.add("input-error-show");
     errorMsg.textContent = errorMessage;
   }
-
-  // Ocultar mensaje de error
   _hideInputError(inputElement) {
     const errorMsg = this._formElement.querySelector(
       `.${inputElement.id}-error`
@@ -26,8 +22,6 @@ export class FormValidator {
     errorMsg.classList.remove("input-error-show");
     errorMsg.textContent = "";
   }
-
-  // Validar un campo
   _isValid(inputElement) {
     if (!inputElement.validity.valid) {
       this._showInputError(inputElement, inputElement.validationMessage);
@@ -35,8 +29,6 @@ export class FormValidator {
       this._hideInputError(inputElement);
     }
   }
-
-  // Habilitar o deshabilitar el botón de enviar
   _toggleButtonState() {
     const hasInvalidInput = this._inputList.some(
       (input) => !input.validity.valid
@@ -47,8 +39,6 @@ export class FormValidator {
       hasInvalidInput
     );
   }
-
-  // Agregar eventos a los inputs
   _setEventListeners() {
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
@@ -56,16 +46,13 @@ export class FormValidator {
         this._toggleButtonState();
       });
     });
-
     this._formElement.addEventListener("reset", () => {
       this._inputList.forEach((input) => this._hideInputError(input));
       this._toggleButtonState();
     });
   }
-
-  // Inicializar validación del formulario
   enableValidation() {
     this._setEventListeners();
-    this._toggleButtonState(); // Validar estado inicial del botón
+    this._toggleButtonState();
   }
 }
