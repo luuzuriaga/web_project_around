@@ -3,7 +3,7 @@ import { Card } from "./Card.js";
 import { PopupWithImage } from "./PopupWithImage.js";
 import { PopupWithForm } from "./PopupWithForm.js";
 import { UserInfo } from "./UserInfo.js";
-import { FormValidator } from "./formValidator.js";
+import { FormValidator } from "./FormValidator.js";
 
 // Datos iniciales de las tarjetas
 const initialCards = [
