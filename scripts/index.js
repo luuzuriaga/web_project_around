@@ -40,7 +40,9 @@ imagePopup.setEventListeners(); // Establece los escuchadores de eventos para el
 
 // Función para crear una tarjeta
 const createCard = (data) => {
-  const card = new Card(data, ".post__template", imagePopup); // Pasamos imagePopup directamente
+  const card = new Card(data, ".post__template", (name, link) => {
+    imagePopup.open(name, link);
+  });// Pasamos imagePopup directamente
   return card.createCard();
 };
 
