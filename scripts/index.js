@@ -1,3 +1,4 @@
+// index.js
 import { Section } from "./Section.js";
 import { Card } from "./Card.js";
 import { PopupWithImage } from "./PopupWithImage.js";
@@ -33,11 +34,13 @@ const initialCards = [
   },
 ];
 
+// Instancia PopupWithImage
+const imagePopup = new PopupWithImage(".modal_image");
+imagePopup.setEventListeners(); // Establece los escuchadores de eventos para el popup de imagen
+
 // Función para crear una tarjeta
 const createCard = (data) => {
-  const card = new Card(data, ".post__template", (name, link) => {
-    imagePopup.open(name, link);
-  });
+  const card = new Card(data, ".post__template", imagePopup); // Pasamos imagePopup directamente
   return card.createCard();
 };
 
@@ -115,10 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
   addCardButton.addEventListener("click", () => {
     addCardPopup.open();
   });
-
-  // Popup de imagen
-  const imagePopup = new PopupWithImage(".modal_image");
-  imagePopup.setEventListeners();
 
   // Validadores de formularios
   const editFormValidator = new FormValidator(

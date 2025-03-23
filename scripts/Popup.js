@@ -15,12 +15,12 @@ export class Popup {
   }
 
   open() {
-    this._popup.classList.add("modal-open");
+    this._popup.classList.add("modal--active");
     document.addEventListener("keydown", this._handleEscClose);
   }
 
   close() {
-    this._popup.classList.remove("modal-open");
+    this._popup.classList.remove("modal--active");
     document.removeEventListener("keydown", this._handleEscClose);
   }
 
