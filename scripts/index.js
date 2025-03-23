@@ -1,8 +1,10 @@
-import { FormValidator } from "./formValidator.js";
-import { Card } from "./card.js";
-import { openModal, closeModal, enableModalEventListeners } from "./utils.js";
-
-const pageFrame = document.querySelector(".page");
+// index.js
+import { Section } from "./Section.js";
+import { Card } from "./Card.js";
+import { PopupWithImage } from "./PopupWithImage.js";
+import { PopupWithForm } from "./PopupWithForm.js";
+import { UserInfo } from "./UserInfo.js";
+import { FormValidator } from "./FormValidator.js";
 
 // Datos iniciales de las tarjetas
 const initialCards = [
@@ -32,104 +34,101 @@ const initialCards = [
   },
 ];
 
-// Activar eventos globales para modales
-enableModalEventListeners(); // Permitir Escape y clics para cerrar modales
+// Instancia PopupWithImage
+const imagePopup = new PopupWithImage(".modal_image");
+imagePopup.setEventListeners(); // Establece los escuchadores de eventos para el popup de imagen
 
-// Renderizar tarjetas iniciales
-Card.renderInitialCards(initialCards, ".posts", ".post__template");
+// Función para crear una tarjeta
+const createCard = (data) => {
+  const card = new Card(data, ".post__template", (name, link) => {
+    imagePopup.open(name, link);
+  });// Pasamos imagePopup directamente
+  return card.createCard();
+};
 
-// Modal para agregar tarjetas
-const addCardButton = document.querySelector(".add__card-button");
-const modalTemplateAddCard = document.querySelector(".modal__box-template");
-const modalCloneAddCard = modalTemplateAddCard.cloneNode(true).content;
-const modalAddCard = modalCloneAddCard.querySelector(".modal");
-const modalAddCardTitle = modalAddCard.querySelector(".modal__box-title");
-const titleInput = modalAddCard.querySelector("#input1");
-const urlLinkInput = modalAddCard.querySelector("#input2");
-const submitButtonAddCard = modalAddCard.querySelector(
-  ".modal__box-form-button"
+// Instancia Section para renderizar tarjetas
+const cardSection = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const cardElement = createCard(item);
+      cardSection.addItem(cardElement);
+    },
+  },
+  ".posts"
 );
 
-function openModalAddCard() {
-  modalAddCardTitle.textContent = "Nuevo Lugar";
-  modalAddCard.querySelector("#input1").placeholder = "Título";
-  modalAddCard.querySelector("#input2").placeholder = "URL de la imagen";
-  modalAddCard.querySelector("#input2").type = "url";
-  openModal(modalAddCard); // Usar la función de apertura global
-  addCardFormValidator.enableValidation(); // Iniciar validación del formulario
-}
+document.addEventListener("DOMContentLoaded", () => {
+  cardSection.renderItems();
 
-addCardButton.addEventListener("click", openModalAddCard);
+  // Instancia UserInfo
+  const userInfo = new UserInfo({
+    nameSelector: ".profile__info-up-name",
+    professionSelector: ".profile__info-down-profession",
+  });
 
-// Crear nuevas tarjetas
-function submitCardInfo(event) {
-  event.preventDefault();
+  // 📌 Clonar y añadir modal de editar perfil
+  const editProfileTemplate = document.querySelector(
+    ".modal__box-template"
+  ).content;
+  const editProfileModal = editProfileTemplate
+    .querySelector(".modal")
+    .cloneNode(true);
+  editProfileModal.classList.add("modal_user");
+  document.body.appendChild(editProfileModal);
 
-  const title = titleInput.value.trim();
-  const imageUrl = urlLinkInput.value.trim();
+  // Popup editar perfil
+  const editProfilePopup = new PopupWithForm(editProfileModal, (formData) => {
+    userInfo.setUserInfo({
+      name: formData.name,
+      profession: formData.profession,
+    });
+    editProfilePopup.close();
+  });
+  editProfilePopup.setEventListeners();
 
-  if (!imageUrl) {
-    alert("Por favor ingresa una URL válida para la imagen.");
-    return;
-  }
+  // Botón abrir popup editar perfil
+  const editProfileButton = document.querySelector(
+    ".profile__info-up-edit-button"
+  );
 
-  const newCard = new Card({ name: title, link: imageUrl }, ".post__template");
-  const cardElement = newCard.createCard();
+  editProfileButton.addEventListener("click", () => {
+    const { name, profession } = userInfo.getUserInfo();
+    editProfileModal.querySelector("#input1").value = name;
+    editProfileModal.querySelector("#input2").value = profession;
+    editProfilePopup.open();
+  });
 
-  const postsCardsContainer = document.querySelector(".posts");
-  postsCardsContainer.prepend(cardElement); // Agregar al contenedor de tarjetas
+  // 📌 Clonar y añadir modal de agregar tarjeta
+  const addCardTemplate = document.querySelector(
+    ".modal__add-card-template"
+  ).content;
+  const addCardModal = addCardTemplate.querySelector(".modal").cloneNode(true);
+  addCardModal.classList.add("modal_add");
+  document.body.appendChild(addCardModal);
 
-  closeModal(modalAddCard); // Usar la función de cierre global
-  titleInput.value = "";
-  urlLinkInput.value = "";
-}
+  // Popup agregar tarjeta
+  const addCardPopup = new PopupWithForm(addCardModal, (formData) => {
+    const newCard = createCard({ name: formData.title, link: formData.link });
+    cardSection.addItem(newCard);
+    addCardPopup.close();
+  });
+  addCardPopup.setEventListeners();
 
-submitButtonAddCard.addEventListener("click", submitCardInfo);
+  // Botón abrir popup agregar tarjeta
+  const addCardButton = document.querySelector(".add__card-button");
+  addCardButton.addEventListener("click", () => {
+    addCardPopup.open();
+  });
 
-// Instanciar validador para el formulario de agregar tarjeta
-const addCardFormValidator = new FormValidator(
-  modalAddCard.querySelector(".modal__box-form")
-);
-addCardFormValidator.enableValidation();
+  // Validadores de formularios
+  const editFormValidator = new FormValidator(
+    editProfileModal.querySelector(".modal__box-form")
+  );
+  editFormValidator.enableValidation();
 
-// Modal de edición de perfil
-const editProfileButton = document.querySelector(
-  ".profile__info-up-edit-button"
-);
-const modalCloneUserInfo = modalTemplateAddCard.cloneNode(true).content; // Clonar de manera independiente
-const modalUserInfo = modalCloneUserInfo.querySelector(".modal");
-const modalUserInfoTitle = modalUserInfo.querySelector(".modal__box-title");
-const modalUserInfoForm = modalUserInfo.querySelector(".modal__box-form");
-const nameInput = modalUserInfoForm.querySelector("#input1");
-const professionInput = modalUserInfoForm.querySelector("#input2");
-const submitButtonUserInfo = modalUserInfo.querySelector(
-  ".modal__box-form-button"
-);
-
-function openModalUserInfo() {
-  modalUserInfoTitle.textContent = "Editar Perfil";
-  nameInput.placeholder = "Nombre"; // Cambiar el contenido del placeholder
-  professionInput.placeholder = "Acerca de mí";
-  nameInput.value = newName.textContent; // Prellenar el formulario con datos actuales
-  professionInput.value = newProfession.textContent;
-  openModal(modalUserInfo); // Usar la función de apertura global
-  editProfileFormValidator.enableValidation(); // Iniciar validación del formulario
-}
-
-// Guardar cambios en perfil
-const newName = document.querySelector(".profile__info-up-name");
-const newProfession = document.querySelector(".profile__info-down-profession");
-
-function submitUserInfo(event) {
-  event.preventDefault();
-  newName.textContent = nameInput.value;
-  newProfession.textContent = professionInput.value;
-  closeModal(modalUserInfo); // Usar la función de cierre global
-}
-
-submitButtonUserInfo.addEventListener("click", submitUserInfo);
-editProfileButton.addEventListener("click", openModalUserInfo);
-
-// Instanciar validador para el formulario de editar perfil
-const editProfileFormValidator = new FormValidator(modalUserInfoForm);
-editProfileFormValidator.enableValidation();
+  const addFormValidator = new FormValidator(
+    addCardModal.querySelector(".modal__box-form")
+  );
+  addFormValidator.enableValidation();
+});

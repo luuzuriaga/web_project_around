@@ -2,8 +2,9 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="shortcut icon" href="./favicon.ico?" />
+    <link rel="shortcut icon" href="./favicon.ico" />
     <link rel="stylesheet" href="./pages/index.css" />
+    <link rel="stylesheet" href="./vendor/normalize.css" />
     <title>Around the US</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Alrededor de los EEUU" />
@@ -88,12 +89,13 @@
             </div>
             <div class="modal__box">
               <form class="modal__box-form" novalidate>
-                <h3 class="modal__box-title"></h3>
+                <h3 class="modal__box-title">Editar perfil</h3>
                 <label class="modal__box-form-field">
                   <input
                     type="text"
                     id="input1"
-                    placeholder=""
+                    name="name"
+                    placeholder="Nombre"
                     class="modal__box-form-input"
                     minlength="2"
                     maxlength="40"
@@ -105,7 +107,8 @@
                   <input
                     type="text"
                     id="input2"
-                    placeholder=""
+                    name="profession"
+                    placeholder="Profesión"
                     class="modal__box-form-input"
                     minlength="2"
                     maxlength="200"
@@ -124,20 +127,67 @@
             </div>
           </div>
         </template>
-        <template class="modal__card-template">
+
+        <div class="modal modal_image">
+          <div class="modal__card">
+            <div class="modal__close-box-flex">
+              <img
+                src="./images/close_icon.png"
+                alt="close-icon"
+                class="close-icon"
+              />
+            </div>
+            <div class="modal__card-image-container">
+              <img class="modal__card-image" src="" alt="" />
+            </div>
+            <p class="modal__card-title"></p>
+          </div>
+        </div>
+
+        <template class="modal__add-card-template">
           <div class="modal">
-            <div class="modal__card">
-              <div class="modal__close-box-flex">
-                <img
-                  src="./images/close_icon.png"
-                  alt="close-icon"
-                  class="close-icon"
-                />
-              </div>
-              <div class="modal__card-image-container">
-                <img class="modal__card-image" src="" alt="" />
-              </div>
-              <p class="modal__card-title"></p>
+            <div class="modal__close-box">
+              <img
+                src="./images/close_icon.png"
+                alt="close-icon"
+                class="close-icon"
+              />
+            </div>
+            <div class="modal__box">
+              <form class="modal__box-form" novalidate>
+                <h3 class="modal__box-title">Nuevo lugar</h3>
+                <label class="modal__box-form-field">
+                  <input
+                    type="text"
+                    id="title-input"
+                    name="title"
+                    placeholder="Título"
+                    class="modal__box-form-input"
+                    minlength="2"
+                    maxlength="30"
+                    required
+                  />
+                  <span id="errorTitle" class="input-error"></span>
+                </label>
+                <label class="modal__box-form-field">
+                  <input
+                    type="url"
+                    id="link-input"
+                    name="link"
+                    placeholder="Enlace de la imagen"
+                    class="modal__box-form-input"
+                    required
+                  />
+                  <span id="errorLink" class="input-error"></span>
+                </label>
+                <button
+                  type="submit"
+                  class="modal__box-form-button"
+                  name="submit"
+                >
+                  Crear
+                </button>
+              </form>
             </div>
           </div>
         </template>
