@@ -4,6 +4,13 @@ export class Popup {
       typeof popupSelectorOrElement === "string"
         ? document.querySelector(popupSelectorOrElement)
         : popupSelectorOrElement;
+
+    if (!this._popup) {
+      throw new Error(
+        `Elemento no encontrado para el selector: ${popupSelectorOrElement}`
+      );
+    }
+
     this._handleEscClose = this._handleEscClose.bind(this);
   }
 
