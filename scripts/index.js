@@ -1,10 +1,10 @@
 // index.js
 import { Section } from "./Section.js";
-import { Card } from "./Card.js";
+import { Card } from "./archivo1.js";
 import { PopupWithImage } from "./PopupWithImage.js";
 import { PopupWithForm } from "./PopupWithForm.js";
 import { UserInfo } from "./UserInfo.js";
-import { FormValidator } from "./FormValidator.js";
+import { FormValidator } from "./archivo2.js";
 
 // Datos iniciales de las tarjetas
 const initialCards = [
