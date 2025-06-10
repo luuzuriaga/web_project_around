@@ -1,3 +1,4 @@
+//Card.js
 export class Card {
   constructor({ name, link }, templateSelector, handleCardClick) {
     this._name = name;
@@ -12,10 +13,15 @@ export class Card {
     return cardTemplate.cloneNode(true);
   }
 
-  _handleDeleteCard(event) {
+  //_handleDeleteCard(event) {
     // Elimina la tarjeta del DOM cuando se hace clic en el botón de borrar
-    event.target.closest(".post").remove();
-  }
+  //  event.target.closest(".post").remove();
+  //}
+
+  // Método para eliminar la tarjeta del DOM
+  _handleDeleteCard = () => {
+    this._cardElement.remove();
+  };
 
   _handleLikeButton(event) {
     const likeButton = event.target;

@@ -22,13 +22,27 @@
               src="./images/logo.svg"
             />
           </header>
+
           <section class="profile">
-            <div class="profile__avatar">
+            <div class="profile__avatar profile__avatar-wrapper">
               <img
                 class="profile__avatar"
                 alt="Picture of Jacques Cousteau"
                 src="./images/Avatar.png"
               />
+
+              <!-- Rectángulo oscuro -->
+              <div class="profile__avatar-overlay"></div>
+              <button
+                class="profile__edit-avatar"
+                type="button"
+              >
+                <img
+                  src="./images/edit_avatar.png"
+                  alt="Editar avatar"
+                  class="profile__avatar-button"
+                />
+              </button>
             </div>
             <div class="profile__info">
               <div class="profile__info-text">
@@ -49,24 +63,20 @@
           </section>
           <section class="posts"></section>
           <footer class="footer">
-            <p class="footer__copyright">© 2024 Around The U.S.</p>
+            <p class="footer__copyright">©2025 Around The U.S.</p>
           </footer>
         </div>
+        
+        <!-- Template para las tarjetas de posts -->
         <template class="post__template">
           <div class="post">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="20px"
-              viewBox="0 0 448 512"
-              width="20px"
-              fill="#ffffff"
-              class="trash-icon"
-            >
-              <path
-                d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"
-                class="trash-button"
-              />
-            </svg>
+            <img
+            src="./images/trash.svg"
+            alt="Eliminar"
+            class="trash-icon trash-button"
+            width="20"
+            height="20"
+            />
             <img class="post__picture" />
             <div class="post__info-bar">
               <h3 class="post__info-bar-name"></h3>
@@ -78,6 +88,8 @@
             </div>
           </div>
         </template>
+        
+        <!-- Template para editar perfil -->
         <template class="modal__box-template">
           <div class="modal">
             <div class="modal__close-box">
@@ -128,22 +140,7 @@
           </div>
         </template>
 
-        <div class="modal modal_image">
-          <div class="modal__card">
-            <div class="modal__close-box-flex">
-              <img
-                src="./images/close_icon.png"
-                alt="close-icon"
-                class="close-icon"
-              />
-            </div>
-            <div class="modal__card-image-container">
-              <img class="modal__card-image" src="" alt="" />
-            </div>
-            <p class="modal__card-title"></p>
-          </div>
-        </div>
-
+        <!-- Template para añadir nuevas tarjetas (RECUPERADO) -->
         <template class="modal__add-card-template">
           <div class="modal">
             <div class="modal__close-box">
@@ -186,6 +183,76 @@
                   name="submit"
                 >
                   Crear
+                </button>
+              </form>
+            </div>
+          </div>
+        </template>
+
+        <!-- Modal para mostrar imágenes ampliadas -->
+        <div class="modal modal_image">
+          <div class="modal__card">
+            <div class="modal__close-box-flex">
+              <img
+                src="./images/close_icon.png"
+                alt="close-icon"
+                class="close-icon"
+              />
+            </div>
+            <div class="modal__card-image-container">
+              <img class="modal__card-image" src="" alt="" />
+            </div>
+            <p class="modal__card-title"></p>
+          </div>
+        </div>
+
+        <!-- Template para confirmar eliminación -->
+        <template id="modal__confirm-delete-template" class="modal__confirm-delete-template">
+          <div class="modal modal__confirm-delete">
+            <div class="modal__box">
+              <div class="modal__close-box">
+                <img
+                  src="./images/close_icon.png"
+                  alt="close-icon"
+                  class="close-icon"
+                />
+              </div>
+              <h3 class="modal__box-title">¿Estás seguro?</h3>
+              <div class="modal__box-buttons">
+                <button class="modal__confirm-button">Sí</button>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <!-- Template para cambiar foto del perfil -->
+        <template class="modal__avatar-template">
+          <div class="modal modal_type_avatar">
+            <div class="modal__close-box">
+              <img
+                src="./images/close_icon.png"
+                alt="close-icon"
+                class="close-icon"
+              />
+            </div>
+            <div class="modal__box">
+              <h3 class="modal__box-title">
+                ¿Deseas cambiar la foto del perfil?
+              </h3>
+              <form class="modal__box-form modal__box-form-avatar">
+                <div class="modal__box-form-field">
+                  <input
+                    type="url"
+                    id="avatar-input"
+                    name="avatarLink"
+                    class="modal__box-form-input"
+                    placeholder="Pega el enlace aquí"
+                    required
+                  />
+                  <span id="avatar-input-error" class="input-error"></span>
+                </div>
+                <button type="submit" class="modal__box-form-button">
+                  Guardar
                 </button>
               </form>
             </div>

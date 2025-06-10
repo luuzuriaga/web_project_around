@@ -1,3 +1,4 @@
+//UserInfo.js
 export class UserInfo {
   constructor({ nameSelector, professionSelector }) {
     this._nameElement = document.querySelector(nameSelector);

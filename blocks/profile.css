@@ -15,10 +15,66 @@
   padding: 0; /* Asegúrate de no tener relleno extra */
 }
 
+.profile__avatar-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
 .profile__avatar {
+  display: block;
   max-width: 120px;
   max-height: 120px;
   border-radius: 200px;
+  overflow: cover;
+}
+
+.profile__avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Mostrar overlay al hacer hover */
+.profile__avatar-wrapper:hover .profile__avatar-overlay {
+  opacity: 1;
+}
+
+.profile__edit-avatar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.profile__edit-avatar:hover {
+  opacity: 0.7;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.profile__edit-avatar img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }
 
 .profile__info-text {
@@ -148,7 +204,7 @@
     width: 282px;
     height: 286px;
     position: relative;
-    top: 70px;
+    top: 0;
 
     box-sizing: border-box;
     margin: 0 auto;
