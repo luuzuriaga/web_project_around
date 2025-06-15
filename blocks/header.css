@@ -24,7 +24,7 @@
     border-width: 1px; /* Define el grosor del borde */
     box-sizing: border-box; /* Incluye padding y borde */
     position: relative; /* Permite que `top` funcione */
-    margin: 0 auto; /* Centra el header horizontalmente */
+    margin: 0 0 70 0; /* Centra el header horizontalmente */
     display: flex; /* Activa Flexbox */
     align-items: center; /* Centra verticalmente */
     justify-content: center; /* Centra horizontalmente */

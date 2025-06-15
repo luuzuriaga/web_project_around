@@ -31,14 +31,24 @@ export class Popup {
     }
   }
 
-  setEventListeners() {
-    this._popup.addEventListener("mousedown", (event) => {
-      if (
-        event.target.classList.contains("modal") ||
-        event.target.classList.contains("close-icon")
-      ) {
-        this.close();
-      }
+setEventListeners() {
+  // Cerrar al hacer click en el fondo oscuro (modal)
+  this._popup.addEventListener('mousedown', (event) => {
+    if (event.target === this._popup) {
+      this.close();
+    }
+  });
+
+  // Cerrar al hacer click en el ícono de cerrar o su contenedor
+  const closeElements = [
+    ...this._popup.querySelectorAll('.close-icon, .modal__close-box')
+  ];
+  
+  closeElements.forEach(element => {
+    element.addEventListener('click', (event) => {
+      event.stopPropagation(); // Evita que el evento llegue al modal
+      this.close();
     });
-  }
+  });
+}
 }

@@ -187,15 +187,7 @@
 }
 
 @media screen and (max-width: 320px) {
-  .footer {
-    width: 85%;
-    margin-top: 50px;
-  }
 
-  .footer__copyright {
-    font-size: 14px;
-    text-align: left;
-  }
 
   .modal__box {
     width: 90%;

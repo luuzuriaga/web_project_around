@@ -9,14 +9,44 @@ import { PopupWithConfirmation } from "./PopupWithConfirmation.js";
 import { UserInfo } from "./UserInfo.js";
 import { FormValidator } from "./FormValidator.js";
 
-// Datos iniciales de las tarjetas que se mostrarán al cargar la página
+// Datos iniciales de las tarjetas
 const initialCards = [
-  { name: "Valle de Yosemite", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/yosemite.jpg" },
-  { name: "Lago Louise", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lake-louise.jpg" },
-  { name: "Montañas Calvas", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/bald-mountains.jpg" },
-  { name: "Latemar", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/latemar.jpg" },
-  { name: "Parque Nacional de la Vanoise", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/vanoise.jpg" },
-  { name: "Lago di Braies", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lago.jpg" },
+  {
+    name: "Valle de Yosemite",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/yosemite.jpg",
+    _id: "card-1",
+    likes: [],
+  },
+  {
+    name: "Lago Louise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lake-louise.jpg",
+    _id: "card-2",
+    likes: [],
+  },
+  {
+    name: "Montañas Calvas",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/bald-mountains.jpg",
+    _id: "card-3",
+    likes: [],
+  },
+  {
+    name: "Latemar",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/latemar.jpg",
+    _id: "card-4",
+    likes: [],
+  },
+  {
+    name: "Parque Nacional de la Vanoise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/vanoise.jpg",
+    _id: "card-5",
+    likes: [],
+  },
+  {
+    name: "Lago di Braies",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lago.jpg",
+    _id: "card-6",
+    likes: [],
+  },
 ];
 
 // Crear instancia del popup de imagen
@@ -34,30 +64,44 @@ confirmPopup.setEventListeners();
 
 // Función para crear una nueva tarjeta
 const createCard = (data) => {
-  const card = new Card(data, ".post__template", (name, link) => {
-    imagePopup.open(name, link);
-  });
+  const card = new Card(
+    {
+      ...data,
+      _id: data._id || `card-${Date.now()}`,
+    },
+    ".post__template",
+    (name, link) => imagePopup.open(name, link),
+    (cardId) => {
+      const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+      if (cardElement) confirmPopup.open(cardElement);
+    },
+    async (cardId, shouldLike) => {
+      const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+      const heartIcon = cardElement?.querySelector(".heart-icon");
 
-  const cardElement = card.createCard();
+      if (heartIcon) {
+        heartIcon.classList.toggle("heart-icon_active", shouldLike);
+        if (shouldLike) {
+          heartIcon.classList.add("heart-icon_animate");
+          setTimeout(() => heartIcon.classList.remove("heart-icon_animate"), 300);
+        }
+      }
 
-  const trashIcon = cardElement.querySelector(".trash-icon");
-  if (trashIcon) {
-    trashIcon.addEventListener("click", () => {
-      confirmPopup.open(cardElement);
-    });
-  }
-
-  return cardElement;
+      // Simulación de API
+      console.log(`Like ${shouldLike ? "activado" : "desactivado"} para ${cardId}`);
+      return new Promise((resolve) => {
+        setTimeout(() => resolve({ success: true, isLiked: shouldLike }), 300);
+      });
+    }
+  );
+  return card.createCard();
 };
 
 // Crear instancia de Section para manejar el renderizado de tarjetas
 const cardSection = new Section(
   {
     items: initialCards,
-    renderer: (item) => {
-      const cardElement = createCard(item);
-      cardSection.addItem(cardElement);
-    },
+    renderer: (item) => cardSection.addItem(createCard(item)),
   },
   ".posts"
 );
@@ -66,14 +110,16 @@ const cardSection = new Section(
 document.addEventListener("DOMContentLoaded", () => {
   cardSection.renderItems();
 
+  // Modificación en UserInfo para manejar el avatar
   const userInfo = new UserInfo({
     nameSelector: ".profile__info-up-name",
     professionSelector: ".profile__info-down-profession",
+    avatarSelector: ".profile__avatar-wrapper .profile__avatar" // Selector específico sin cambiar HTML
   });
 
   // ----------- POPUP EDITAR PERFIL -----------
-  const editProfileTemplate = document.querySelector(".modal__box-template").content;
-  const editProfileModal = editProfileTemplate.querySelector(".modal").cloneNode(true);
+  const editProfileModal = document.querySelector(".modal__box-template").content
+    .querySelector(".modal").cloneNode(true);
   editProfileModal.classList.add("modal_user");
   document.body.appendChild(editProfileModal);
 
@@ -86,8 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   editProfilePopup.setEventListeners();
 
-  const editProfileButton = document.querySelector(".profile__info-up-edit-button");
-  editProfileButton.addEventListener("click", () => {
+  document.querySelector(".profile__info-up-edit-button").addEventListener("click", () => {
     const { name, profession } = userInfo.getUserInfo();
     editProfileModal.querySelector("#input1").value = name;
     editProfileModal.querySelector("#input2").value = profession;
@@ -95,99 +140,66 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ----------- POPUP AÑADIR TARJETA -----------
-  const addCardTemplate = document.querySelector(".modal__add-card-template").content;
-  const addCardModal = addCardTemplate.querySelector(".modal").cloneNode(true);
+  const addCardModal = document.querySelector(".modal__add-card-template").content
+    .querySelector(".modal").cloneNode(true);
   addCardModal.classList.add("modal_add");
   document.body.appendChild(addCardModal);
 
   const addCardPopup = new PopupWithForm(addCardModal, (formData) => {
-    const newCard = createCard({ name: formData.title, link: formData.link });
-    cardSection.addItem(newCard);
+    cardSection.addItem(createCard({
+      name: formData.title,
+      link: formData.link,
+      _id: `new-${Date.now()}`,
+    }));
     addCardPopup.close();
   });
   addCardPopup.setEventListeners();
 
-  const addCardButton = document.querySelector(".add__card-button");
-  addCardButton.addEventListener("click", () => {
-    addCardPopup.open();
-  });
+  document.querySelector(".add__card-button").addEventListener("click", () => addCardPopup.open());
 
- // ----------- POPUP ACTUALIZAR AVATAR -----------
-const avatarTemplate = document.querySelector("template.modal__avatar-template");
-
-if (avatarTemplate) {
-  const avatarModal = avatarTemplate.content.querySelector(".modal").cloneNode(true);
+  // ----------- POPUP ACTUALIZAR AVATAR (VERSIÓN SIMPLIFICADA) -----------
+  const avatarModal = document.querySelector("template.modal__avatar-template").content
+    .querySelector(".modal").cloneNode(true);
   document.body.appendChild(avatarModal);
 
-const avatarPopup = new PopupWithForm(avatarModal, (formData) => {
-    console.log("Buscando imagen de perfil...");
-    const profileImg = document.querySelector(".profile__avatar");
-    console.log("Elemento encontrado:", profileImg);
-    
-    if (profileImg && formData.avatarLink) {
-      // Creamos una imagen temporal para verificar que se carga correctamente
-      const testImage = new Image();
-      testImage.onload = () => {
-        // La imagen se carga correctamente
-        profileImg.src = formData.avatarLink;
-
-        // Opcional: Guardar en localStorage para persistencia
-        localStorage.setItem('userAvatar', formData.avatarLink);
-
-        avatarPopup.close();
-        
-      console.log("Avatar actualizado correctamente:", formData.avatarLink);
+  const avatarPopup = new PopupWithForm(avatarModal, (formData) => {
+    const testImage = new Image();
+    testImage.onload = () => {
+      userInfo.setUserAvatar(formData.avatarLink);
+      localStorage.setItem("userAvatar", formData.avatarLink);
+      avatarPopup.close();
     };
-
-      // 3. Definimos qué pasa si hay error al cargar la imagen
-      testImage.onerror = () => {
-        // Mostrar error si la imagen no se puede cargar
-        const errorElement = avatarModal.querySelector("#avatar-input-error");
-        if (errorElement) {
-          errorElement.textContent = "No se pudo cargar la imagen. Verifica el enlace.";
-          errorElement.classList.add("input-error-show");
-        }
-        console.error("Error al cargar la imagen:", formData.avatarLink);
-        // IMPORTANTE: NO hacemos return aquí, el popup sigue abierto para corrección
-      };
-      // 4. Intentamos cargar la imagen (dispara onload/onerror)
-      testImage.src = formData.avatarLink;
-    }
+    testImage.onerror = () => {
+      const errorElement = avatarModal.querySelector("#avatar-input-error");
+      errorElement.textContent = "No se pudo cargar la imagen. Verifica el enlace.";
+      errorElement.classList.add("input-error-show");
+    };
+    testImage.src = formData.avatarLink;
   });
 
-  // Configuración del validador
-  const avatarForm = avatarModal.querySelector(".modal__box-form");
-  if (avatarForm) {
-    new FormValidator(avatarForm).enableValidation();
-  }
+  // Configurar eventos para el avatar
+  const setupAvatarEvents = () => {
+    avatarPopup.setEventListeners();
+    new FormValidator(avatarModal.querySelector(".modal__box-form")).enableValidation();
 
-  // Eventos para abrir el modal
-  const editAvatarBtn = document.querySelector(".profile__edit-avatar");
-  const avatarOverlay = document.querySelector(".profile__avatar-overlay");
-
-  if (editAvatarBtn) {
-    editAvatarBtn.addEventListener("click", (e) => {
-      e.preventDefault();
+    const openAvatarPopup = (e) => {
+      e?.preventDefault();
       avatarPopup.open();
-      // Limpiar errores al abrir
-      const errorElement = avatarModal.querySelector("#avatar-input-error");
-      if (errorElement) {
-        errorElement.textContent = "";
-        errorElement.classList.remove("input-error-show");
-      }
-    });
-  }
+      avatarModal.querySelector("#avatar-input-error").textContent = "";
+    };
 
-  if (avatarOverlay) {
-    avatarOverlay.addEventListener("click", (e) => {
-      e.preventDefault();
-      avatarPopup.open();
-    });
-  }
+    document.querySelector(".profile__edit-avatar").addEventListener("click", openAvatarPopup);
+    document.querySelector(".profile__avatar-overlay").addEventListener("click", openAvatarPopup);
 
-  // Cargar avatar guardado si existe (opcional)
-  const savedAvatar = localStorage.getItem('userAvatar');
-  if (savedAvatar) {
-    document.querySelector(".profile__avatar").src = savedAvatar;
+    // Cargar avatar guardado si existe
+    const savedAvatar = localStorage.getItem("userAvatar");
+    if (savedAvatar) {
+      document.querySelector(".profile__avatar-wrapper .profile__avatar").src = savedAvatar;
+    }
+  };
+
+  // Verificar que existan los elementos antes de configurar eventos
+  if (document.querySelector(".profile__edit-avatar") && document.querySelector(".profile__avatar-overlay")) {
+    setupAvatarEvents();
   }
-}})
+});

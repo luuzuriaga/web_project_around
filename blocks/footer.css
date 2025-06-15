@@ -20,7 +20,13 @@
 @media screen and (max-width: 320px) {
   .footer {
     text-align: center;
-    width: 100%; /* Asegurar que el footer ocupe todo el ancho en pantallas muy pequeñas */
+    width: 85%; /* Asegurar que el footer ocupe todo el ancho en pantallas muy pequeñas */
     margin-top: 50px; /* Ajustar el margen superior */
   }
+
+  .footer__copyright {
+    font-size: 14px;
+    text-align: left;
+  }
+
 }
