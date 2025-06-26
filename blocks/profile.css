@@ -2,10 +2,14 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: left;
-  margin: 0 0 50px 0; /* Agrega un margen inferior de 20px */
+  align-items: center; /* Mejor que "left" */
+  margin-bottom: 50px;
   width: 100%;
-  border-color: aliceblue;
+  max-width: 880px; /* Añadir máximo ancho para pantallas grandes */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .profile__info {

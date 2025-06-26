@@ -15,3 +15,4 @@ export class PopupWithImage extends Popup {
     super.open();
   }
 }
+

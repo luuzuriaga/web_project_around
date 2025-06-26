@@ -2,9 +2,9 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="shortcut icon" href="./favicon.ico" />
-    <link rel="stylesheet" href="./pages/index.css" />
-    <link rel="stylesheet" href="./vendor/normalize.css" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="stylesheet" href="../pages/index.css" />
+    <link rel="stylesheet" href="../vendor/normalize.css" />
     <title>Around the US</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Alrededor de los EEUU" />
@@ -19,7 +19,7 @@
             <img
               class="logo"
               alt="Picture of Jacques Cousteau"
-              src="./images/logo.svg"
+              src="../images/logo.svg"
             />
           </header>
 
@@ -28,17 +28,14 @@
               <img
                 class="profile__avatar"
                 alt="Picture of Jacques Cousteau"
-                src="./images/Avatar.png"
+                src="../images/Avatar.png"
               />
 
               <!-- Rectángulo oscuro -->
               <div class="profile__avatar-overlay"></div>
-              <button
-                class="profile__edit-avatar"
-                type="button"
-              >
+              <button class="profile__edit-avatar" type="button">
                 <img
-                  src="./images/edit_avatar.png"
+                  src="../images/edit_avatar.png"
                   alt="Editar avatar"
                   class="profile__avatar-button"
                 />
@@ -49,7 +46,7 @@
                 <div class="profile__info-up">
                   <h2 class="profile__info-up-name">Jacques Cousteau</h2>
                   <div class="profile__info-up-edit-button hovered-edit">
-                    <img src="./images/editButton.png" alt="Edit" />
+                    <img src="../images/editButton.png" alt="Edit" />
                   </div>
                 </div>
                 <div class="profile__info-down">
@@ -58,7 +55,7 @@
               </div>
             </div>
             <div class="add__card-button hovered-add">
-              <img src="./images/plus.png" alt="Add" />
+              <img src="../images/plus.png" alt="Add" />
             </div>
           </section>
           <section class="posts"></section>
@@ -66,41 +63,44 @@
             <p class="footer__copyright">©2025 Around The U.S.</p>
           </footer>
         </div>
-        
+
         <!-- Template para las tarjetas de posts -->
         <template class="post__template">
           <div class="post">
             <img
-            src="./images/trash.svg"
-            alt="Eliminar"
-            class="trash-icon trash-button"
-            width="20"
-            height="20"
+              src="../images/trash.svg"
+              alt="Eliminar"
+              class="trash-icon trash-button"
+              width="20"
+              height="20"
             />
             <img class="post__picture" />
             <div class="post__info-bar">
               <h3 class="post__info-bar-name"></h3>
-              <img
-                class="heart-icon"
-                alt="Not liked"
-                src="./images/heart-icon.svg"
-              />
+              <div class="post__like-container">
+                <img
+                  class="heart-icon"
+                  alt="Not liked"
+                  src="../images/heart-icon.svg"
+                />
+                <span class="post__like-count">0</span>
+              </div>
             </div>
           </div>
         </template>
-        
+
         <!-- Template para editar perfil -->
-        <template class="modal__box-template">
+        <template id="edit-profile-template">
           <div class="modal">
             <div class="modal__close-box">
               <img
-                src="./images/close_icon.png"
+                src="../images/close_icon.png"
                 alt="close-icon"
                 class="close-icon"
               />
             </div>
             <div class="modal__box">
-              <form class="modal__box-form" novalidate>
+              <form class="modal__box-form" id="profile-form" novalidate>
                 <h3 class="modal__box-title">Editar perfil</h3>
                 <label class="modal__box-form-field">
                   <input
@@ -113,7 +113,7 @@
                     maxlength="40"
                     required
                   />
-                  <span id="errorMsg1" class="input1-error input-error"></span>
+                  <span id="input1-error" class="input-error"></span>
                 </label>
                 <label class="modal__box-form-field">
                   <input
@@ -126,7 +126,7 @@
                     maxlength="200"
                     required
                   />
-                  <span id="errorMsg2" class="input2-error input-error"></span>
+                  <span id="input2-error" class="input-error"></span>
                 </label>
                 <button
                   type="submit"
@@ -140,18 +140,18 @@
           </div>
         </template>
 
-        <!-- Template para añadir nuevas tarjetas (RECUPERADO) -->
-        <template class="modal__add-card-template">
+        <!-- Template para añadir nuevas tarjetas -->
+        <template id="add-card-template">
           <div class="modal">
             <div class="modal__close-box">
               <img
-                src="./images/close_icon.png"
+                src="../images/close_icon.png"
                 alt="close-icon"
                 class="close-icon"
               />
             </div>
             <div class="modal__box">
-              <form class="modal__box-form" novalidate>
+              <form class="modal__box-form" id="card-form" novalidate>
                 <h3 class="modal__box-title">Nuevo lugar</h3>
                 <label class="modal__box-form-field">
                   <input
@@ -164,7 +164,7 @@
                     maxlength="30"
                     required
                   />
-                  <span id="errorTitle" class="title-input-error input-error"></span>
+                  <span id="title-input-error" class="input-error"></span>
                 </label>
                 <label class="modal__box-form-field">
                   <input
@@ -175,7 +175,7 @@
                     class="modal__box-form-input"
                     required
                   />
-                  <span id="errorLink" class="link-input-error input-error"></span>
+                  <span id="link-input-error" class="input-error"></span>
                 </label>
                 <button
                   type="submit"
@@ -194,7 +194,7 @@
           <div class="modal__card">
             <div class="modal__close-box-flex">
               <img
-                src="./images/close_icon.png"
+                src="../images/close_icon.png"
                 alt="close-icon"
                 class="close-icon"
               />
@@ -207,16 +207,16 @@
         </div>
 
         <!-- Template para confirmar eliminación -->
-        <template id="modal__confirm-delete-template" class="modal__confirm-delete-template">
+        <template id="confirm-delete-template">
           <div class="modal modal__confirm-delete">
+            <div class="modal__close-box">
+              <img
+                src="../images/close_icon.png"
+                alt="close-icon"
+                class="close-icon"
+              />
+            </div>
             <div class="modal__box">
-              <div class="modal__close-box">
-                <img
-                  src="./images/close_icon.png"
-                  alt="close-icon"
-                  class="close-icon"
-                />
-              </div>
               <h3 class="modal__box-title">¿Estás seguro?</h3>
               <div class="modal__box-buttons">
                 <button class="modal__confirm-button">Sí</button>
@@ -226,12 +226,12 @@
         </template>
 
         <!-- Template para cambiar foto del perfil -->
-        <template class="modal__avatar-template">
+        <template id="change-avatar-template">
           <div class="modal modal_type_avatar">
             <div class="modal__close-box">
               <img
-                src="./images/close_icon.png"
-                alt="close-icon"
+                src="../images/close_icon.png"
+                alt="cerrar ventana"
                 class="close-icon"
               />
             </div>
@@ -239,7 +239,7 @@
               <h3 class="modal__box-title">
                 ¿Deseas cambiar la foto del perfil?
               </h3>
-              <form class="modal__box-form modal__box-form-avatar">
+              <form class="modal__box-form" id="avatar-form" novalidate>
                 <div class="modal__box-form-field">
                   <input
                     type="url"
@@ -254,12 +254,13 @@
                 <button type="submit" class="modal__box-form-button">
                   Guardar
                 </button>
+                <div class="modal__status-message"></div>
               </form>
             </div>
           </div>
         </template>
       </div>
     </div>
-    <script type="module" src="./scripts/index.js"></script>
+    <script type="module" src="../scripts/index.js"></script>
   </body>
 </html>

@@ -1,6 +1,4 @@
-// index.js
-
-// Importación de clases necesarias
+//index.js
 import { Section } from "./Section.js";
 import { Card } from "./Card.js";
 import { PopupWithImage } from "./PopupWithImage.js";
@@ -8,186 +6,229 @@ import { PopupWithForm } from "./PopupWithForm.js";
 import { PopupWithConfirmation } from "./PopupWithConfirmation.js";
 import { UserInfo } from "./UserInfo.js";
 import { FormValidator } from "./FormValidator.js";
+import { api } from "./Api.js";
 
-// Datos iniciales de las tarjetas que se mostrarán al cargar la página
-const initialCards = [
-  { name: "Valle de Yosemite", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/yosemite.jpg" },
-  { name: "Lago Louise", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lake-louise.jpg" },
-  { name: "Montañas Calvas", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/bald-mountains.jpg" },
-  { name: "Latemar", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/latemar.jpg" },
-  { name: "Parque Nacional de la Vanoise", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/vanoise.jpg" },
-  { name: "Lago di Braies", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lago.jpg" },
-];
+// Configuración inicial
+const formValidators = {};
+const cardsInstances = [];
 
-// Crear instancia del popup de imagen
-const imagePopup = new PopupWithImage(".modal_image");
+// Inicialización de popups
+const imagePopup = new PopupWithImage('.modal_image');
 imagePopup.setEventListeners();
 
-// Crear instancia del popup de confirmación para eliminar tarjetas
+// Popup de confirmación
 const confirmPopup = new PopupWithConfirmation(
-  ".modal__confirm-delete-template",
-  (cardElement) => {
-    cardElement.remove();
+  '#confirm-delete-template',
+  (cardId, cardInstance) => {
+    return api.deleteCard(cardId)
+      .then(() => {
+        cardInstance.remove();
+        const index = cardsInstances.findIndex(c => c._id === cardId);
+        if (index !== -1) cardsInstances.splice(index, 1);
+      })
+      .catch(showError)
+      .finally(() => confirmPopup.close());
   }
 );
 confirmPopup.setEventListeners();
 
-// Función para crear una nueva tarjeta
-const createCard = (data) => {
-  const card = new Card(data, ".post__template", (name, link) => {
-    imagePopup.open(name, link);
-  });
-
+// Función para crear tarjetas
+const createCard = (cardData, currentUserId) => {
+  const card = new Card(
+    { 
+      ...cardData, 
+      currentUserId 
+    },
+    '.post__template',
+    (name, link) => imagePopup.open(name, link),
+    (cardId, cardInstance) => confirmPopup.open(cardId, cardInstance),
+    (cardId, isLiked) => api.toggleLike(cardId, isLiked)
+  );
+  
   const cardElement = card.createCard();
-
-  const trashIcon = cardElement.querySelector(".trash-icon");
-  if (trashIcon) {
-    trashIcon.addEventListener("click", () => {
-      confirmPopup.open(cardElement);
-    });
-  }
-
+  cardsInstances.push(card);
   return cardElement;
 };
 
-// Crear instancia de Section para manejar el renderizado de tarjetas
+// Sección de tarjetas
 const cardSection = new Section(
   {
-    items: initialCards,
-    renderer: (item) => {
-      const cardElement = createCard(item);
-      cardSection.addItem(cardElement);
-    },
+    items: [],
+    renderer: (item, userId) => cardSection.addItem(createCard(item, userId))
   },
-  ".posts"
+  '.posts'
 );
 
-// Ejecutar después de que el DOM se haya cargado completamente
-document.addEventListener("DOMContentLoaded", () => {
-  cardSection.renderItems();
+// Información del usuario
+const userInfo = new UserInfo({
+  nameSelector: '.profile__info-up-name',
+  aboutSelector: '.profile__info-down-profession',
+  avatarSelector: '.profile__avatar'
+});
 
-  const userInfo = new UserInfo({
-    nameSelector: ".profile__info-up-name",
-    professionSelector: ".profile__info-down-profession",
-  });
+// Configuración de validación de formularios
+const formConfig = {
+  formSelector: '.modal__box-form',
+  inputSelector: '.modal__box-form-input',
+  submitButtonSelector: '.modal__box-form-button',
+  inactiveButtonClass: 'modal__box-form-button-inactive',
+  inputErrorClass: 'modal__box-form-input-error',
+  errorClass: 'input-error-show'
+};
 
-  // ----------- POPUP EDITAR PERFIL -----------
-  const editProfileTemplate = document.querySelector(".modal__box-template").content;
-  const editProfileModal = editProfileTemplate.querySelector(".modal").cloneNode(true);
-  editProfileModal.classList.add("modal_user");
-  document.body.appendChild(editProfileModal);
+const setupForm = (formElement) => {
+  if (!formElement) return null;
+  
+  const validator = new FormValidator(formConfig, formElement);
+  validator.enableValidation();
+  formValidators[formElement.id] = validator;
+  return validator;
+};
 
-  const editProfilePopup = new PopupWithForm(editProfileModal, (formData) => {
-    userInfo.setUserInfo({
+// Popup de edición de perfil
+const editProfilePopup = new PopupWithForm(
+  '#edit-profile-template',
+  (formData) => {
+    editProfilePopup.showLoading(true);
+    api.updateUserInfo({
       name: formData.name,
-      profession: formData.profession,
-    });
-    editProfilePopup.close();
-  });
-  editProfilePopup.setEventListeners();
+      about: formData.profession
+    })
+      .then(data => {
+        userInfo.setUserInfo(data);
+        editProfilePopup.close();
+      })
+      .catch(showError)
+      .finally(() => editProfilePopup.showLoading(false));
+  }
+);
+editProfilePopup.setEventListeners();
 
-  const editProfileButton = document.querySelector(".profile__info-up-edit-button");
-  editProfileButton.addEventListener("click", () => {
-    const { name, profession } = userInfo.getUserInfo();
-    editProfileModal.querySelector("#input1").value = name;
-    editProfileModal.querySelector("#input2").value = profession;
-    editProfilePopup.open();
-  });
+// Popup para añadir tarjetas
+const addCardPopup = new PopupWithForm(
+  '#add-card-template',
+  (formData) => {
+    addCardPopup.showLoading(true);
+    api.addNewCard({
+      name: formData.title,
+      link: formData.link
+    })
+      .then(newCard => {
+        cardSection.addItem(createCard(newCard, userInfo.getUserId()));
+        addCardPopup.close();
+      })
+      .catch(showError)
+      .finally(() => addCardPopup.showLoading(false));
+  }
+);
+addCardPopup.setEventListeners();
 
-  // ----------- POPUP AÑADIR TARJETA -----------
-  const addCardTemplate = document.querySelector(".modal__add-card-template").content;
-  const addCardModal = addCardTemplate.querySelector(".modal").cloneNode(true);
-  addCardModal.classList.add("modal_add");
-  document.body.appendChild(addCardModal);
-
-  const addCardPopup = new PopupWithForm(addCardModal, (formData) => {
-    const newCard = createCard({ name: formData.title, link: formData.link });
-    cardSection.addItem(newCard);
-    addCardPopup.close();
-  });
-  addCardPopup.setEventListeners();
-
-  const addCardButton = document.querySelector(".add__card-button");
-  addCardButton.addEventListener("click", () => {
-    addCardPopup.open();
-  });
-
- // ----------- POPUP ACTUALIZAR AVATAR -----------
-const avatarTemplate = document.querySelector("template.modal__avatar-template");
-
-if (avatarTemplate) {
-  const avatarModal = avatarTemplate.content.querySelector(".modal").cloneNode(true);
-  document.body.appendChild(avatarModal);
-
-const avatarPopup = new PopupWithForm(avatarModal, (formData) => {
-    console.log("Buscando imagen de perfil...");
-    const profileImg = document.querySelector(".profile__avatar");
-    console.log("Elemento encontrado:", profileImg);
+// Popup para cambiar avatar
+const avatarPopup = new PopupWithForm(
+  '#change-avatar-template',
+  (formData) => {
+    avatarPopup.showLoading(true, 'Actualizando...');
     
-    if (profileImg && formData.avatarLink) {
-      // Creamos una imagen temporal para verificar que se carga correctamente
-      const testImage = new Image();
-      testImage.onload = () => {
-        // La imagen se carga correctamente
-        profileImg.src = formData.avatarLink;
-
-        // Opcional: Guardar en localStorage para persistencia
-        localStorage.setItem('userAvatar', formData.avatarLink);
-
-        avatarPopup.close();
-        
-      console.log("Avatar actualizado correctamente:", formData.avatarLink);
-    };
-
-      // 3. Definimos qué pasa si hay error al cargar la imagen
-      testImage.onerror = () => {
-        // Mostrar error si la imagen no se puede cargar
-        const errorElement = avatarModal.querySelector("#avatar-input-error");
-        if (errorElement) {
-          errorElement.textContent = "No se pudo cargar la imagen. Verifica el enlace.";
-          errorElement.classList.add("input-error-show");
-        }
-        console.error("Error al cargar la imagen:", formData.avatarLink);
-        // IMPORTANTE: NO hacemos return aquí, el popup sigue abierto para corrección
-      };
-      // 4. Intentamos cargar la imagen (dispara onload/onerror)
-      testImage.src = formData.avatarLink;
+    if (!formData.avatarLink?.trim()) {
+      showFormError('Ingresa una URL válida', 'avatar-form');
+      avatarPopup.showLoading(false);
+      return;
     }
-  });
 
-  // Configuración del validador
-  const avatarForm = avatarModal.querySelector(".modal__box-form");
-  if (avatarForm) {
-    new FormValidator(avatarForm).enableValidation();
+    let avatarUrl = formData.avatarLink.trim();
+    if (!avatarUrl.startsWith('http')) {
+      avatarUrl = `https://${avatarUrl}`;
+    }
+
+    api.updateUserAvatar({ avatar: avatarUrl })
+      .then(data => {
+        if (!data.avatar) throw new Error('Avatar no recibido');
+        userInfo.setUserAvatar(data.avatar);
+        showFormSuccess('¡Avatar actualizado!', 'avatar-form');
+        setTimeout(() => avatarPopup.close(), 1000);
+      })
+      .catch(err => {
+        console.error('Error avatar:', err);
+        showFormError('Error al actualizar. Intenta con otra imagen.', 'avatar-form');
+      })
+      .finally(() => avatarPopup.showLoading(false));
   }
+);
+avatarPopup.setEventListeners();
 
-  // Eventos para abrir el modal
-  const editAvatarBtn = document.querySelector(".profile__edit-avatar");
-  const avatarOverlay = document.querySelector(".profile__avatar-overlay");
+// Funciones auxiliares
+function showError(err) {
+  console.error(err);
+  const errorElement = document.createElement('div');
+  errorElement.className = 'global-error';
+  errorElement.textContent = typeof err === 'string' ? err : 'Ocurrió un error';
+  document.body.appendChild(errorElement);
+  setTimeout(() => errorElement.remove(), 3000);
+}
 
-  if (editAvatarBtn) {
-    editAvatarBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      avatarPopup.open();
-      // Limpiar errores al abrir
-      const errorElement = avatarModal.querySelector("#avatar-input-error");
-      if (errorElement) {
-        errorElement.textContent = "";
-        errorElement.classList.remove("input-error-show");
-      }
-    });
+function showFormError(message, formId) {
+  const form = document.getElementById(formId);
+  const errorElement = form?.querySelector('.input-error');
+  if (errorElement) {
+    errorElement.textContent = message;
+    errorElement.classList.add('input-error-show');
   }
+}
 
-  if (avatarOverlay) {
-    avatarOverlay.addEventListener("click", (e) => {
-      e.preventDefault();
-      avatarPopup.open();
-    });
+function showFormSuccess(message, formId) {
+  const form = document.getElementById(formId);
+  const successElement = form?.querySelector('.modal__status-message');
+  if (successElement) {
+    successElement.textContent = message;
+    successElement.style.color = '#2ecc71';
   }
+}
 
-  // Cargar avatar guardado si existe (opcional)
-  const savedAvatar = localStorage.getItem('userAvatar');
-  if (savedAvatar) {
-    document.querySelector(".profile__avatar").src = savedAvatar;
+// Inicialización
+document.addEventListener('DOMContentLoaded', () => {
+  api.loadInitialData()
+    .then(([userData, cards]) => {
+      userInfo.setUserInfo(userData);
+      cardsInstances.length = 0;
+      cardSection.setItems(cards);
+      cardSection.renderItems(userData._id);
+      
+      // Configurar validadores
+      setupForm(document.getElementById('profile-form'));
+      setupForm(document.getElementById('card-form'));
+      setupForm(document.getElementById('avatar-form'));
+    })
+    .catch(showError);
+});
+
+// Event listeners
+document.querySelector('.profile__info-up-edit-button')?.addEventListener('click', () => {
+  const userData = userInfo.getUserInfo();
+  const form = document.getElementById('profile-form');
+  if (form) {
+    form.querySelector('#input1').value = userData.name;
+    form.querySelector('#input2').value = userData.about;
+    formValidators['profile-form']?.resetValidation();
   }
-}})
+  editProfilePopup.open();
+});
+
+document.querySelector('.add__card-button')?.addEventListener('click', () => {
+  formValidators['card-form']?.resetValidation();
+  addCardPopup.open();
+});
+
+document.querySelector('.profile__edit-avatar')?.addEventListener('click', () => {
+  const form = document.getElementById('avatar-form');
+  if (form) {
+    form.reset();
+    formValidators['avatar-form']?.resetValidation();
+    const errorElement = form.querySelector('.input-error');
+    if (errorElement) {
+      errorElement.textContent = '';
+      errorElement.classList.remove('input-error-show');
+    }
+  }
+  avatarPopup.open();
+});
+

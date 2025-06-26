@@ -1,11 +1,13 @@
 .posts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Tres columnas para las tarjetas */
-  gap: 17px; /* Espaciado entre las tarjetas */
-  width: 880px; /* Ancho total del contenedor */
-  height: auto; /* Alto total del contenedor */
-  margin: 0 auto; /* Centra las tarjetas en el contenedor */
-  box-sizing: border-box; /* Incluye el gap en el ancho total */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 17px;
+  width: 880px;
+  height: auto;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0;
+  list-style: none;
 }
 
 .post {
@@ -14,20 +16,27 @@
   color: black;
   font-family: "Inter Black", sans-serif;
   font-size: 20px;
-  width: 282px; /* Ancho exacto de cada tarjeta */
-  height: 361px; /* Alto exacto de cada tarjeta */
+  width: 282px;
+  height: 361px;
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Añade profundidad */
-  overflow: hidden; /* Evita desbordes del contenido */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.post:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 .post__picture {
-  border-radius: 10px 10px 0 0; /* Redondeo en la parte superior */
-  width: 282px; /* Imagen cuadrada: ancho */
-  height: 282px; /* Imagen cuadrada: alto */
-  object-fit: cover; /* Asegura que la imagen rellene el área sin distorsión */
+  border-radius: 10px 10px 0 0;
+  width: 100%;
+  height: 282px;
+  object-fit: cover;
+  cursor: pointer;
 }
 
 .post__info-bar {
@@ -35,54 +44,152 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 18px; /* Espaciado interno para los textos */
-  margin-top: 10px;
+  padding: 20px 18px;
+  margin-top: auto;
 }
 
 .post__info-bar-name {
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden; /* Evita que el texto se desborde */
-  max-width: 208px; /* Máximo ancho del texto dentro de la tarjeta */
+  overflow: hidden;
+  max-width: 208px;
+  margin: 0;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
 }
 
 .trash-icon {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  transition: color 0.5s ease;
+  top: 18px;
+  right: 15px;
+  width: 18px;
+  height: 19px;
+  background: url('../images/trash.svg') no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  z-index: 1; /* Asegura que esté por encima de otros elementos */
+  display: block !important; /* Fuerza la visualización */
 }
 
 .trash-icon:hover {
-  fill: black;
+  opacity: 0.6;
+  transform: scale(1.1);
 }
 
+/* Estado normal del corazón (gris) */
 .heart-icon {
-  height: 25px;
-  width: 25px;
+  width: 22px;
+  height: 19px;
+  background: url('../images/heart-icon.svg') no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  padding: 0;
 }
 
+
+/* Estado "like" (rojo) */
+.heart-icon_active {
+  background-image: url('../images/heart-icon-black.svg') !important;
+  transform: scale(1.1);
+}
+
+/* Efecto hover */
+.heart-icon:hover {
+  transform: scale(1.1); /* Efecto al pasar el mouse */
+  opacity: 0.8;
+}
+
+/* Animación de pulso (opcional) */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@keyframes heartPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.heart-icon_animate {
+  animation: heartPulse 0.4s ease;
+}
+
+.post__like-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.post__like-count {
+  font-size: 13px;
+  color: #000;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Estilos para botones durante carga */
+.modal__box-form-button[disabled] {
+  position: relative;
+  opacity: 0.7;
+  cursor: not-allowed;
+  color: transparent;
+}
+
+.modal__box-form-button[disabled]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: buttonSpin 0.8s linear infinite;
+}
+
+@keyframes buttonSpin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Ajuste para el botón de eliminar solo visible para propias tarjetas */
+/* .trash-button {
+  transition: opacity 0.3s ease;
+}
+
+.trash-button:hover {
+  opacity: 0.6;
+}
+*/
 /* Responsividad */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   .posts {
-    grid-template-columns: repeat(
-      2,
-      1fr
-    ); /* Dos columnas para pantallas medianas */
-    width: 100%; /* Contenedor fluido */
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    width: 90%;
+    max-width: 600px;
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 320px) {
   .posts {
-    grid-template-columns: repeat(1, 1fr); /* Una columna en móviles */
-    width: 100%; /* Contenedor fluido */
-    gap: 20px;
-    padding-top: 100px;
+    grid-template-columns: 1fr;
+    width: 100%;
+    padding: 0 19px;
   }
-
+  
   .post {
-    margin: 0 auto; /* Centra las tarjetas en móviles */
+    width: 100%;
+    max-width: 282px;
+    margin: 0 auto;
   }
 }
