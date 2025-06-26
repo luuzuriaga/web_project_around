@@ -70,8 +70,8 @@
   border: none;
   cursor: pointer;
   transition: opacity 0.3s ease;
-  z-index: 1; /* Asegura que esté por encima de otros elementos */
-  display: block !important; /* Fuerza la visualización */
+  z-index: 1; /* Asegura que estÃ© por encima de otros elementos */
+  display: block !important; /* Fuerza la visualizaciÃ³n */
 }
 
 .trash-icon:hover {
@@ -79,7 +79,7 @@
   transform: scale(1.1);
 }
 
-/* Estado normal del corazón (gris) */
+/* Estado normal del corazÃ³n (gris) */
 .heart-icon {
   width: 22px;
   height: 19px;
@@ -104,7 +104,7 @@
   opacity: 0.8;
 }
 
-/* Animación de pulso (opcional) */
+/* AnimaciÃ³n de pulso (opcional) */
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.2); }
@@ -162,7 +162,7 @@
   to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* Ajuste para el botón de eliminar solo visible para propias tarjetas */
+/* Ajuste para el botÃ³n de eliminar solo visible para propias tarjetas */
 /* .trash-button {
   transition: opacity 0.3s ease;
 }

@@ -68,23 +68,20 @@
         <template class="post__template">
           <div class="post">
             <img
-              src="../images/trash.svg"
-              alt="Eliminar"
-              class="trash-icon trash-button"
-              width="20"
-              height="20"
+            src="./images/trash.svg"
+            alt="Eliminar"
+            class="trash-icon trash-button"
+            width="20"
+            height="20"
             />
             <img class="post__picture" />
             <div class="post__info-bar">
               <h3 class="post__info-bar-name"></h3>
-              <div class="post__like-container">
-                <img
-                  class="heart-icon"
-                  alt="Not liked"
-                  src="../images/heart-icon.svg"
-                />
-                <span class="post__like-count">0</span>
-              </div>
+              <img
+                class="heart-icon"
+                alt="Not liked"
+                src="./images/heart-icon.svg"
+              />
             </div>
           </div>
         </template>
@@ -209,14 +206,14 @@
         <!-- Template para confirmar eliminación -->
         <template id="confirm-delete-template">
           <div class="modal modal__confirm-delete">
-            <div class="modal__close-box">
-              <img
-                src="../images/close_icon.png"
-                alt="close-icon"
-                class="close-icon"
-              />
-            </div>
             <div class="modal__box">
+              <div class="modal__close-box">
+                <img
+                  src="./images/close_icon.png"
+                  alt="close-icon"
+                  class="close-icon"
+                />
+              </div>
               <h3 class="modal__box-title">¿Estás seguro?</h3>
               <div class="modal__box-buttons">
                 <button class="modal__confirm-button">Sí</button>
@@ -239,7 +236,7 @@
               <h3 class="modal__box-title">
                 ¿Deseas cambiar la foto del perfil?
               </h3>
-              <form class="modal__box-form" id="avatar-form" novalidate>
+              <form class="modal__box-form modal__box-form-avatar">
                 <div class="modal__box-form-field">
                   <input
                     type="url"

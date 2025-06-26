@@ -50,5 +50,9 @@ setEventListeners() {
       this.close();
     });
   });
+<<<<<<< HEAD
+=======
+}
+>>>>>>> b58197688bde22c165b0f27c4e44338deba9b1d1
 }
 }

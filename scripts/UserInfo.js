@@ -2,6 +2,7 @@
 export class UserInfo {
   constructor({ nameSelector, aboutSelector, avatarSelector }) {
     this._nameElement = document.querySelector(nameSelector);
+<<<<<<< HEAD
     this._aboutElement = document.querySelector(aboutSelector);
     this._avatarElement = document.querySelector(avatarSelector);
     this._userId = null;
@@ -15,9 +16,28 @@ export class UserInfo {
       about: this._aboutElement?.textContent || '',
       avatar: this._avatarElement?.src || '',
       _id: this._userId || ''
-    };
+=======
+    this._professionElement = document.querySelector(professionSelector);
+    // Selecciona el avatar usando la estructura existente
+    this._avatarElement = document.querySelector('.profile__avatar-wrapper .profile__avatar');
   }
 
+  getUserInfo() {
+    const userInfo = {
+      name: this._nameElement.textContent,
+      profession: this._professionElement.textContent
+>>>>>>> b58197688bde22c165b0f27c4e44338deba9b1d1
+    };
+    
+    // Añade el avatar solo si existe el elemento
+    if (this._avatarElement) {
+      userInfo.avatar = this._avatarElement.src;
+    }
+    
+    return userInfo;
+  }
+
+<<<<<<< HEAD
   setUserInfo({ name, about, avatar, _id }) {
     if (name) this._nameElement.textContent = name;
     if (about) this._aboutElement.textContent = about;
@@ -70,5 +90,22 @@ export class UserInfo {
 
   getUserId() {
     return this._userId;
+=======
+  setUserInfo({ name, profession, avatar }) {
+    if (name) this._nameElement.textContent = name;
+    if (profession) this._professionElement.textContent = profession;
+    if (avatar) this.setUserAvatar(avatar);
+>>>>>>> b58197688bde22c165b0f27c4e44338deba9b1d1
+  }
+
+  setUserAvatar(avatarUrl) {
+    if (this._avatarElement) {
+      // Crea una imagen temporal para validar antes de asignar
+      const testImage = new Image();
+      testImage.onload = () => {
+        this._avatarElement.src = avatarUrl;
+      };
+      testImage.src = avatarUrl;
+    }
   }
 }
