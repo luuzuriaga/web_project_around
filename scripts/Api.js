@@ -6,10 +6,13 @@ export class Api {
   }
 
   _checkResponse(res) {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Error ${res.status}: ${res.statusText}`);
+    return res.json().then(data => {
+      if (res.ok) {
+        // Eliminamos la normalización ya que la API devuelve los datos directamente
+        return data;
+      }
+      return Promise.reject(`Error ${res.status}: ${res.statusText}`);
+    });
   }
 
   getUserInfo() {
@@ -33,7 +36,6 @@ export class Api {
   }
 
   updateUserAvatar({ avatar }) {
-    // Limpiar parámetros de caché
     const cleanAvatar = avatar.split('?')[0];
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',

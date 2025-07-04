@@ -1,21 +1,20 @@
+/* Estilos base para el contenedor de posts */
 .posts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 17px;
+  grid-template-columns: repeat(3, 282px);
+  gap: 20px;
   width: 880px;
-  height: auto;
   margin: 0 auto;
-  box-sizing: border-box;
   padding: 0;
   list-style: none;
+  box-sizing: border-box;
+  justify-content: center;
 }
 
+/* Estilos para cada tarjeta de post */
 .post {
   background-color: white;
   border-radius: 10px;
-  color: black;
-  font-family: "Inter Black", sans-serif;
-  font-size: 20px;
   width: 282px;
   height: 361px;
   display: flex;
@@ -23,7 +22,7 @@
   position: relative;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .post:hover {
@@ -31,17 +30,23 @@
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* Estilos para la imagen del post */
 .post__picture {
-  border-radius: 10px 10px 0 0;
   width: 100%;
   height: 282px;
   object-fit: cover;
   cursor: pointer;
+  border-radius: 10px 10px 0 0;
+  transition: opacity 0.3s ease;
 }
 
+.post__picture:hover {
+  opacity: 0.9;
+}
+
+/* Estilos para la barra de información */
 .post__info-bar {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 20px 18px;
@@ -49,16 +54,19 @@
 }
 
 .post__info-bar-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000;
+  margin: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   max-width: 208px;
-  margin: 0;
-  font-weight: 900;
-  font-size: 24px;
-  line-height: 29px;
 }
 
+/* Estilos para el icono de basura */
 .trash-icon {
   position: absolute;
   top: 18px;
@@ -69,58 +77,38 @@
   background-size: contain;
   border: none;
   cursor: pointer;
-  transition: opacity 0.3s ease;
-  z-index: 1; /* Asegura que esté por encima de otros elementos */
-  display: block !important; /* Fuerza la visualización */
+  transition: all 0.3s ease;
+  z-index: 1;
+  opacity: 0.8;
 }
 
 .trash-icon:hover {
-  opacity: 0.6;
+  opacity: 1;
   transform: scale(1.1);
 }
 
-/* Estado normal del corazón (gris) */
+/* Estilos para el corazón/like */
 .heart-icon {
   width: 22px;
   height: 19px;
   background: url('../images/heart-icon.svg') no-repeat center;
   background-size: contain;
-  cursor: pointer;
-  transition: all 0.3s ease;
   border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
   padding: 0;
 }
 
-
-/* Estado "like" (rojo) */
 .heart-icon_active {
   background-image: url('../images/heart-icon-black.svg') !important;
-  transform: scale(1.1);
-}
-
-/* Efecto hover */
-.heart-icon:hover {
-  transform: scale(1.1); /* Efecto al pasar el mouse */
-  opacity: 0.8;
-}
-
-/* Animación de pulso (opcional) */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
-
-@keyframes heartPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
-}
-
-.heart-icon_animate {
   animation: heartPulse 0.4s ease;
 }
 
+.heart-icon:hover {
+  opacity: 0.8;
+}
+
+/* Contenedor de likes */
 .post__like-container {
   display: flex;
   flex-direction: column;
@@ -129,14 +117,42 @@
 }
 
 .post__like-count {
+  font-family: 'Inter', sans-serif;
   font-size: 13px;
   color: #000;
-  font-family: 'Inter', sans-serif;
   font-weight: 400;
   margin: 0;
 }
 
-/* Estilos para botones durante carga */
+/* Animaciones */
+@keyframes heartPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Feedback de errores */
+.card-error-feedback {
+  position: absolute;
+  bottom: -25px;
+  background: #ffebee;
+  color: #c62828;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 10;
+  animation: fadeIn 0.3s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  max-width: 200px;
+  white-space: nowrap;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilos para carga */
 .modal__box-form-button[disabled] {
   position: relative;
   opacity: 0.7;
@@ -162,34 +178,25 @@
   to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* Ajuste para el botón de eliminar solo visible para propias tarjetas */
-/* .trash-button {
-  transition: opacity 0.3s ease;
-}
-
-.trash-button:hover {
-  opacity: 0.6;
-}
-*/
-/* Responsividad */
-@media screen and (max-width: 900px) {
+/* Responsive Design - Tablet */
+@media screen and (max-width: 950px) {
   .posts {
-    grid-template-columns: repeat(2, 1fr);
     width: 90%;
-    max-width: 600px;
+    grid-template-columns: repeat(2, 282px);
+    gap: 17px;
   }
 }
 
-@media screen and (max-width: 320px) {
+/* Responsive Design - Mobile */
+@media screen and (max-width: 650px) {
   .posts {
-    grid-template-columns: 1fr;
+    grid-template-columns: 282px;
     width: 100%;
     padding: 0 19px;
+    gap: 20px;
   }
   
   .post {
-    width: 100%;
-    max-width: 282px;
     margin: 0 auto;
   }
 }
