@@ -1,0 +1,32 @@
+.footer {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  color: #545454;
+  margin-top: 67px;
+  text-align: left; /* Cambiar a center para centrar el texto */
+  width: 100%;
+  position: relative; /* Asegurar que el footer esté posicionado correctamente */
+  bottom: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    text-align: center;
+    width: 100%; /* Asegurar que el footer ocupe todo el ancho en pantallas pequeñas */
+    margin-top: 50px; /* Ajustar el margen superior */
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .footer {
+    text-align: center;
+    width: 85%; /* Asegurar que el footer ocupe todo el ancho en pantallas muy pequeñas */
+    margin-top: 50px; /* Ajustar el margen superior */
+  }
+
+  .footer__copyright {
+    font-size: 14px;
+    text-align: left;
+  }
+
+}

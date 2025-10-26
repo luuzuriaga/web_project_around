@@ -1,0 +1,36 @@
+.header {
+  width: 100%;
+  height: 74px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #545454;
+}
+
+.logo {
+  max-width: 173px;
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    padding: 0 15px; /* Ajusta el padding para pantallas medianas */
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .header {
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    height: 56px; /* Altura fija */
+    top: 28px; /* Ajusta la posición vertical */
+    border-width: 1px; /* Define el grosor del borde */
+    box-sizing: border-box; /* Incluye padding y borde */
+    position: relative; /* Permite que `top` funcione */
+    margin: 0 0 70 0; /* Centra el header horizontalmente */
+    display: flex; /* Activa Flexbox */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+  }
+
+  .logo {
+    max-width: 140px; /* Ajusta el tamaño del logo */
+  }
+}

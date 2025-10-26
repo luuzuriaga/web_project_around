@@ -1,0 +1,202 @@
+/* Estilos base para el contenedor de posts */
+.posts {
+  display: grid;
+  grid-template-columns: repeat(3, 282px);
+  gap: 20px;
+  width: 880px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+/* Estilos para cada tarjeta de post */
+.post {
+  background-color: white;
+  border-radius: 10px;
+  width: 282px;
+  height: 361px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.post:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para la imagen del post */
+.post__picture {
+  width: 100%;
+  height: 282px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 10px 10px 0 0;
+  transition: opacity 0.3s ease;
+}
+
+.post__picture:hover {
+  opacity: 0.9;
+}
+
+/* Estilos para la barra de información */
+.post__info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 18px;
+  margin-top: auto;
+}
+
+.post__info-bar-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 208px;
+}
+
+/* Estilos para el icono de basura */
+.trash-icon {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  width: 18px;
+  height: 19px;
+  background: url('../images/trash.svg') no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1;
+  opacity: 0.8;
+}
+
+.trash-icon:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Estilos para el corazón/like */
+.heart-icon {
+  width: 22px;
+  height: 19px;
+  background: url('../images/heart-icon.svg') no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.heart-icon_active {
+  background-image: url('../images/heart-icon-black.svg') !important;
+  animation: heartPulse 0.4s ease;
+}
+
+.heart-icon:hover {
+  opacity: 0.8;
+}
+
+/* Contenedor de likes */
+.post__like-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.post__like-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #000;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Animaciones */
+@keyframes heartPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Feedback de errores */
+.card-error-feedback {
+  position: absolute;
+  bottom: -25px;
+  background: #ffebee;
+  color: #c62828;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 10;
+  animation: fadeIn 0.3s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  max-width: 200px;
+  white-space: nowrap;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilos para carga */
+.modal__box-form-button[disabled] {
+  position: relative;
+  opacity: 0.7;
+  cursor: not-allowed;
+  color: transparent;
+}
+
+.modal__box-form-button[disabled]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: buttonSpin 0.8s linear infinite;
+}
+
+@keyframes buttonSpin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Responsive Design - Tablet */
+@media screen and (max-width: 950px) {
+  .posts {
+    width: 90%;
+    grid-template-columns: repeat(2, 282px);
+    gap: 17px;
+  }
+}
+
+/* Responsive Design - Mobile */
+@media screen and (max-width: 650px) {
+  .posts {
+    grid-template-columns: 282px;
+    width: 100%;
+    padding: 0 19px;
+    gap: 20px;
+  }
+  
+  .post {
+    margin: 0 auto;
+  }
+}
