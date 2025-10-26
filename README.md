@@ -4,6 +4,8 @@
 
 **Alrededor de EEUU** es una aplicación web interactiva que permite a los usuarios compartir y explorar fotografías de lugares emblemáticos de Estados Unidos. Los usuarios pueden gestionar su perfil personal, publicar nuevas tarjetas con imágenes, dar "me gusta" a publicaciones y eliminar sus propias tarjetas.
 
+![Vista previa del sitio](./src/images/home.png)
+
 ## ✨ Funcionalidades principales
 
 - **Gestión de perfil**: Editar nombre, descripción y foto de avatar del usuario
